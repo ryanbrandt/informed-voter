@@ -1,12 +1,28 @@
-import { createStore, applyMiddleware, compose } from "redux";
+import {
+  createStore,
+  applyMiddleware,
+  compose,
+  CombinedState,
+  Store,
+} from "redux";
 import createSagaMiddleware from "redux-saga";
+
+import { SearchAction } from "../CandidateSearch/actions";
+import { SearchState } from "../CandidateSearch/reducer";
 
 import rootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore() {
+export default function configureStore(): {
+  store: Store<
+    CombinedState<{
+      search: SearchState;
+    }>,
+    SearchAction
+  >;
+} {
   const middlewares = [sagaMiddleware];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 

@@ -28,3 +28,6 @@ secrets.ts
 
 # version tag
 gitVersion.ts
+
+# secrets
+secrets.ts

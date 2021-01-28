@@ -1,0 +1,32 @@
+@import "./common.scss";
+
+.candidate_search {
+  &-container {
+    @extend .flex_center-col;
+  }
+
+  &-query-input {
+    min-width: 50%;
+  }
+
+  &-submit-btn {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &-status-container {
+    @extend .flex_center-row;
+    flex-wrap: wrap;
+  }
+
+  &-status {
+    flex-wrap: wrap;
+    display: flex;
+    margin: 10px;
+
+    &-secondary {
+      @extend .candidate_search-status;
+      opacity: 0.5;
+    }
+  }
+}

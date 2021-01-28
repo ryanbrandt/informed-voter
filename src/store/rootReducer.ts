@@ -1,5 +1,9 @@
 import { combineReducers } from "redux";
 
-export interface RootState {}
+import searchReducer, { SearchState } from "../CandidateSearch/reducer";
 
-export default combineReducers({});
+export interface RootState {
+  search: SearchState;
+}
+
+export default combineReducers({ search: searchReducer });

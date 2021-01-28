@@ -9,7 +9,7 @@ export type MenuOption = "Home" | "Search Candidates";
 
 const RootContainer = (): React.ReactElement => {
   const HOME_REGEX = /^\/$/;
-  const SEARCH_REGEX = /^\/search-candidates$/;
+  const SEARCH_REGEX = /^\/candidate-search$/;
 
   const [activeMenuItem, setActiveMenuItem] = useState<MenuOption | null>(
     "Home"
@@ -51,13 +51,16 @@ const RootContainer = (): React.ReactElement => {
     },
     {
       name: "Search Candidates",
-      action: () => history.push("/search-candidates"),
+      action: () => history.push("/candidate-search"),
       active: activeMenuItem === "Search Candidates",
     },
   ];
 
   return (
-    <AppContainer header={<SideMenu options={SIDE_MENU_ITEMS} open />}>
+    <AppContainer
+      className="root-container"
+      header={<SideMenu options={SIDE_MENU_ITEMS} open />}
+    >
       <Router history={history}>{routes}</Router>
     </AppContainer>
   );
