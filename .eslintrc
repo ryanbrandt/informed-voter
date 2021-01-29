@@ -15,6 +15,7 @@
   },
   "rules": {
     "no-bitwise": 0,
+    "no-array-constructor": "off",
     "func-names": ["error", "never"],
     "no-underscore-dangle": "off",
     "prefer-const": "error",

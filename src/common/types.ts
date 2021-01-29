@@ -33,3 +33,13 @@ export interface FecPaginationResponse {
   per_page: number;
   pages: number;
 }
+
+/**
+ * @interface BaseFecResponse
+ * Models FEC API's basic response shape
+ */
+export interface BaseFecResponse<T> {
+  api_version: string;
+  pagination: FecPaginationResponse;
+  results: Array<T>;
+}

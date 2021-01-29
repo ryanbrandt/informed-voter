@@ -1,12 +1,16 @@
 @import "./common.scss";
 
+$table-section-margin: 2vh;
+
 .candidate_search {
   &-container {
     @extend .flex_center-col;
   }
 
   &-query-input {
-    min-width: 50%;
+    @media (min-width: $desktop-min-width) {
+      min-width: 50%;
+    }
   }
 
   &-submit-btn {
@@ -28,5 +32,56 @@
       @extend .candidate_search-status;
       opacity: 0.5;
     }
+  }
+
+  &-loader {
+    margin-top: $table-section-margin;
+  }
+
+  &-table {
+    margin-top: $table-section-margin;
+    width: 100%;
+    @media (min-width: $desktop-min-width) {
+      width: 50%;
+    }
+
+    &-cell {
+      padding: 20px 20px 20px 20px !important;
+    }
+  }
+
+  &-empty-results {
+    @extend .flex_center-col;
+    margin-top: $table-section-margin;
+    color: $informed-gray;
+    fill: $informed-gray;
+    font-style: italic;
+
+    @media (min-width: $desktop-min-width) {
+      margin-top: 100px;
+    }
+  }
+
+  &-content-header {
+    color: $informed-gray;
+    font-weight: 600;
+  }
+
+  &-content-container {
+    padding: 10px 20px 10px 20px;
+    @media (min-width: $desktop-min-width) {
+      padding: 10px 100px 10px 100px;
+    }
+  }
+
+  &-content-row {
+    margin: 20px 0px 20px 0px;
+  }
+
+  &-full-btn {
+    @extend .app-link;
+    font-weight: 600;
+    float: right;
+    padding: 10px;
   }
 }
