@@ -1,5 +1,7 @@
 import { FecPoliticalParty, FecOffice, PoliticalParty, Office } from "./types";
 
+export const API_RESPONSE_DELAY = 500;
+
 export const PARTY_API_MAP: { [key: string]: FecPoliticalParty } = {
   Socialist: "SOC",
   Democrat: "DEM",

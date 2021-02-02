@@ -1,6 +1,6 @@
 import { Office, PoliticalParty } from "../common/types";
 import * as t from "./actionTypes";
-import { SearchResults } from "./types";
+import { SearchPagination, SearchResults } from "./types";
 
 export interface ISetQuery {
   type: t.T_SET_QUERY;
@@ -64,6 +64,38 @@ export function candidateSearchSuccess(
   };
 }
 
+export interface ISetPagination {
+  type: t.T_SET_PAGINATION;
+  pagination: SearchPagination;
+}
+
+export function setPagination(pagination: SearchPagination): ISetPagination {
+  return {
+    type: t.SET_PAGINATION,
+    pagination,
+  };
+}
+
+export interface INextPageRequest {
+  type: t.T_NEXT_PAGE_REQUEST;
+}
+
+export function nextPageRequest(): INextPageRequest {
+  return {
+    type: t.NEXT_PAGE_REQUEST,
+  };
+}
+
+export interface IPrevPageRequest {
+  type: t.T_PREV_PAGE_REQUEST;
+}
+
+export function prevPageRequest(): IPrevPageRequest {
+  return {
+    type: t.PREV_PAGE_REQUEST,
+  };
+}
+
 export interface ISetSearchProcessing {
   type: t.T_SET_SEARCH_PROCESSING;
   processing: boolean;
@@ -81,4 +113,5 @@ export type SearchAction =
   | ISetPartyAffiliation
   | ISetQuery
   | ICandidateSearchSuccess
+  | ISetPagination
   | ISetSearchProcessing;

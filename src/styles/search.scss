@@ -50,6 +50,10 @@ $table-section-margin: 2vh;
     }
   }
 
+  &-pagination-container {
+    padding: 20px;
+  }
+
   &-empty-results {
     @extend .flex_center-col;
     margin-top: $table-section-margin;

@@ -2,7 +2,7 @@ import * as t from "./actionTypes";
 
 import { Office, PoliticalParty } from "../common/types";
 import { SearchAction } from "./actions";
-import { SearchResults } from "./types";
+import { SearchPagination, SearchResults } from "./types";
 
 export interface SearchState {
   query: string | null;
@@ -10,6 +10,7 @@ export interface SearchState {
   office: Office | null;
   processing: boolean;
   candidates: SearchResults[];
+  pagination: SearchPagination;
 }
 
 const initialState: SearchState = {
@@ -18,6 +19,11 @@ const initialState: SearchState = {
   office: null,
   processing: false,
   candidates: [],
+  pagination: {
+    page: 1,
+    pages: 1,
+    url: "",
+  },
 };
 
 export default function (
@@ -63,6 +69,15 @@ export default function (
       return {
         ...state,
         candidates,
+      };
+    }
+
+    case t.SET_PAGINATION: {
+      const { pagination } = action;
+
+      return {
+        ...state,
+        pagination,
       };
     }
 

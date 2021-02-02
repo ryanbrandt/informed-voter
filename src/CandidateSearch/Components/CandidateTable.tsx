@@ -8,6 +8,7 @@ import { SearchResults } from "../types";
 import { RootState } from "../../store/rootReducer";
 import { getCandidates } from "../selectors";
 import EmptySearchResults from "../Subcomponents/EmptySearchResults";
+import CandidateSearchPagination from "../Subcomponents/CandidateSearchPagination";
 
 interface StateProps {
   candidates: SearchResults[];
@@ -18,15 +19,19 @@ const CandidateTable = (props: StateProps): React.ReactElement | null => {
 
   if (candidates.length > 0) {
     return (
-      <Table className="candidate_search-table" headers={["Candidate"]}>
-        {candidates.map((candidate, i) => (
-          <TableRow key={`${candidate.name}_${i}`} darkened={i % 2 === 0}>
-            <TableCell className="candidate_search-table-cell">
-              <CandidateContent candidate={candidate} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </Table>
+      <React.Fragment>
+        <CandidateSearchPagination />
+        <Table className="candidate_search-table" headers={["Candidate"]}>
+          {candidates.map((candidate, i) => (
+            <TableRow key={`${candidate.name}_${i}`} darkened={i % 2 === 0}>
+              <TableCell className="candidate_search-table-cell">
+                <CandidateContent candidate={candidate} />
+              </TableCell>
+            </TableRow>
+          ))}
+        </Table>
+        <CandidateSearchPagination />
+      </React.Fragment>
     );
   }
 

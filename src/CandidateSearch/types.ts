@@ -1,5 +1,11 @@
 import { PoliticalParty, Office } from "../common/types";
 
+export interface SearchPagination {
+  page: number;
+  pages: number;
+  url: string;
+}
+
 export interface CandidateSearchParams {
   party?: PoliticalParty;
   office?: Office;
