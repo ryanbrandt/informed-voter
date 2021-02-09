@@ -12,6 +12,7 @@ export interface CandidateSearchParams {
 }
 
 export interface FecSearchResults {
+  candidate_id: string;
   office_full: string;
   party_full: string;
   name: string;
@@ -20,6 +21,7 @@ export interface FecSearchResults {
 }
 
 export interface SearchResults {
+  id: string;
   office: string;
   party: string;
   name: string;

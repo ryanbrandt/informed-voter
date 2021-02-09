@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Router } from "react-router-dom";
+import { Router } from "react-router";
 
 import { AppContainer, SideMenu } from "handsome-ui";
 

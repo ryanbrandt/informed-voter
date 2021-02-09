@@ -1,21 +1,38 @@
 import React from "react";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
 import { Column, Dropdown, Row } from "handsome-ui";
+
 import { SearchResults } from "../types";
+import { setActiveCandidate } from "../../CandidateHub/actions";
+import { RootState } from "../../store/rootReducer";
+import { history } from "../../routes";
 
 interface Props {
   candidate: SearchResults;
 }
 
-const CandidateContent: React.FunctionComponent<Props> = (
-  props: Props
-): React.ReactElement => {
+interface DispatchProps {
+  setCandidateActive: (id: string) => void;
+}
+
+const CandidateContent = (props: Props & DispatchProps): React.ReactElement => {
   const { candidate } = props;
 
   const _renderHeading = (): React.ReactNode => {
     const { name } = candidate;
 
     return <div className="candidate_search-content-header">{name}</div>;
+  };
+
+  const onSeeFullData = (): void => {
+    const { setCandidateActive } = props;
+
+    const { id } = candidate;
+    setCandidateActive(id);
+
+    history.push(`/candidate-hub/${id}`);
   };
 
   const { state, district, office, party } = candidate;
@@ -45,10 +62,19 @@ const CandidateContent: React.FunctionComponent<Props> = (
             </div>
           </Column>
         </Row>
-        <div className="candidate_search-full-btn">View Full Data</div>
+        <div onClick={onSeeFullData} className="candidate_search-full-btn">
+          View Full Data
+        </div>
       </div>
     </Dropdown>
   );
 };
 
-export default CandidateContent;
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  setCandidateActive: (id: string) => dispatch(setActiveCandidate(id)),
+});
+
+export default connect<void, DispatchProps, Props, RootState>(
+  null,
+  mapDispatchToProps
+)(CandidateContent);
