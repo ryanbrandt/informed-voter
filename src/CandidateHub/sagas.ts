@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { all, takeLatest, put, select, call } from "redux-saga/effects";
+import { all, takeLatest, put, select, call, delay } from "redux-saga/effects";
 
 import * as t from "./actionTypes";
 import api from "../utils/api";
@@ -43,6 +43,7 @@ export function* handleActiveCandidateInfoRequest() {
     console.log(`Failed to retrieve candidate info ${e}`);
   }
 
+  yield delay(500);
   yield put(setCandidateHubProcessing(false));
 }
 

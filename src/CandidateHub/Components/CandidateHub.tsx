@@ -7,6 +7,7 @@ import { LoadingOverlay } from "handsome-ui";
 import { getCandidateHubProcessing } from "../selectors";
 import { activeCandidateInfoRequest } from "../actions";
 import { RootState } from "../../store/rootReducer";
+import CandidateHubHeader from "../Subcomponents/CandidateHubHeader";
 
 interface StateProps {
   processing: boolean;
@@ -29,6 +30,7 @@ const CandidateHub = (
 
   return (
     <div>
+      <CandidateHubHeader />
       <LoadingOverlay show={processing} />
     </div>
   );

@@ -10,7 +10,8 @@ export type PoliticalParty =
   | "Democrat"
   | "Republican"
   | "Libertarian"
-  | "Socialist";
+  | "Socialist"
+  | "None";
 
 /**
  * Office abbreviations supported by the FEC API

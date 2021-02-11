@@ -5,6 +5,7 @@ export const fecCandidateInfoResultsParser = (
 ): CandidateInfo => ({
   name: results.name,
   party: results.party_full,
+  office: results.office_full,
   city: results.address_city,
   state: results.state,
   cycles: results.cycles,

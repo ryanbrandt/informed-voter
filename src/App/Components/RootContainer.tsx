@@ -49,11 +49,6 @@ const RootContainer = (): React.ReactElement => {
       action: () => history.push("/"),
       active: activeMenuItem === "Home",
     },
-    {
-      name: "Search Candidates",
-      action: () => history.push("/candidate-search"),
-      active: activeMenuItem === "Search Candidates",
-    },
   ];
 
   return (

@@ -21,9 +21,13 @@ const CandidateContent = (props: Props & DispatchProps): React.ReactElement => {
   const { candidate } = props;
 
   const _renderHeading = (): React.ReactNode => {
-    const { name } = candidate;
+    const { name, office } = candidate;
 
-    return <div className="candidate_search-content-header">{name}</div>;
+    return (
+      <div className="candidate_search-content-header">
+        {name} for {office}
+      </div>
+    );
   };
 
   const onSeeFullData = (): void => {

@@ -1,0 +1,31 @@
+@import "./common.scss";
+
+.candidate_hub {
+  &-header {
+    font-size: 48px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &-info {
+    &-banner {
+      padding: 25px;
+      margin-top: 20px;
+      border-radius: 20px;
+      opacity: 0.75;
+      background-color: $informed-gray;
+      color: white;
+    }
+
+    &-container {
+      padding: 10px;
+    }
+
+    &-text {
+      font-size: 18px;
+      font-weight: 600;
+      padding: 15px;
+    }
+  }
+}
