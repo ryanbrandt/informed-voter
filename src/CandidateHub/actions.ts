@@ -15,11 +15,15 @@ export function setActiveCandidate(id: string): ISetActiveCandidate {
 
 export interface IActiveCandidateInfoRequest {
   type: t.T_ACTIVE_CANDIDATE_INFO_REQUEST;
+  candidateId: string;
 }
 
-export function activeCandidateInfoRequest(): IActiveCandidateInfoRequest {
+export function activeCandidateInfoRequest(
+  candidateId: string
+): IActiveCandidateInfoRequest {
   return {
     type: t.ACTIVE_CANDIDATE_INFO_REQUEST,
+    candidateId,
   };
 }
 

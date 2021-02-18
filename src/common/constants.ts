@@ -1,4 +1,21 @@
-import { FecPoliticalParty, FecOffice, PoliticalParty, Office } from "./types";
+import {
+  FecPoliticalParty,
+  FecOffice,
+  PoliticalParty,
+  Office,
+  BaseFecResponse,
+} from "./types";
+
+export const DEFAULT_FEC_API_RESPONSE: BaseFecResponse<any> = {
+  api_version: "-1",
+  pagination: {
+    page: 1,
+    pages: 1,
+    count: 0,
+    per_page: 0,
+  },
+  results: [],
+};
 
 export const API_RESPONSE_DELAY = 500;
 

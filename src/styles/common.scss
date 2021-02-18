@@ -51,3 +51,32 @@ $informed-warn: rgba(201, 18, 18, 0.678);
     cursor: pointer;
   }
 }
+
+.dropdown_section {
+  &-header {
+    font-size: 32px;
+    font-weight: 600;
+    flex-wrap: wrap;
+  }
+
+  &-container {
+    padding: 25px 10px 25px 10px;
+  }
+}
+
+.section_container {
+  &-container {
+    padding: 25px 10px 25px 10px;
+  }
+
+  &-description {
+    opacity: 0.5;
+    flex-wrap: wrap;
+    font-style: italic;
+    padding-bottom: 50px;
+
+    @media (min-width: $desktop-min-width) {
+      width: 50%;
+    }
+  }
+}

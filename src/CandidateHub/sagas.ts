@@ -1,34 +1,44 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { all, takeLatest, put, select, call, delay } from "redux-saga/effects";
+import { all, takeLatest, put, call, delay } from "redux-saga/effects";
+import { ApiResponse } from "apisauce";
 
 import * as t from "./actionTypes";
 import api from "../utils/api";
-import {
-  activeCandidateInfoSuccess,
-  setCandidateHubProcessing,
-} from "./actions";
-import { getActiveCandidateId } from "./selectors";
+import * as a from "./actions";
 import { BaseFecResponse } from "../common/types";
 import { FecCandidateInfoResults } from "./types";
 import { fecCandidateInfoResultsParser } from "./parsers";
+import { electioneeringTotalsRequest } from "../Electioneering/actions";
+import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
 
-export function* handleActiveCandidateInfoRequest() {
-  yield put(setCandidateHubProcessing(true));
+export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
+  const { id } = action;
 
-  const candidateId: string | null = yield select(getActiveCandidateId);
+  yield put(a.activeCandidateInfoRequest(id));
+  yield put(electioneeringTotalsRequest(id));
+}
+
+export function* watchSetActiveCandidate() {
+  yield takeLatest(t.SET_ACTIVE_CANDIDATE, handleSetActiveCandidate);
+}
+
+export function* handleActiveCandidateInfoRequest(
+  action: a.IActiveCandidateInfoRequest
+) {
+  yield put(a.setCandidateHubProcessing(true));
+
+  const { candidateId } = action;
 
   try {
     const {
       ok,
       status,
       problem,
-      data,
-    }: {
-      ok: boolean;
-      status: number;
-      problem: string;
-      data: BaseFecResponse<FecCandidateInfoResults>;
-    } = yield call(api.get, `/candidate/${candidateId}`);
+      data = DEFAULT_FEC_API_RESPONSE,
+    }: ApiResponse<BaseFecResponse<FecCandidateInfoResults>> = yield call(
+      api.get,
+      `/candidate/${candidateId}`
+    );
 
     if (!ok) {
       throw Error(`Non-OK response: ${status} - ${problem}`);
@@ -38,13 +48,13 @@ export function* handleActiveCandidateInfoRequest() {
     const [candidateInfo] = results;
 
     const parsedResults = fecCandidateInfoResultsParser(candidateInfo);
-    yield put(activeCandidateInfoSuccess(parsedResults));
+    yield put(a.activeCandidateInfoSuccess(parsedResults));
   } catch (e) {
     console.log(`Failed to retrieve candidate info ${e}`);
   }
 
   yield delay(500);
-  yield put(setCandidateHubProcessing(false));
+  yield put(a.setCandidateHubProcessing(false));
 }
 
 export function* watchActiveCandidateInfoRequest() {
@@ -55,5 +65,5 @@ export function* watchActiveCandidateInfoRequest() {
 }
 
 export default function* rootSaga() {
-  yield all([watchActiveCandidateInfoRequest()]);
+  yield all([watchSetActiveCandidate(), watchActiveCandidateInfoRequest()]);
 }
