@@ -16,7 +16,9 @@ const DropdownSection = (props: Props): React.ReactElement => {
 
   return (
     <div className="dropdown_section-container">
-      <Dropdown heading={_renderHeader()}>{children}</Dropdown>
+      <Dropdown heading={_renderHeader()} defaultOpen>
+        {children}
+      </Dropdown>
     </div>
   );
 };
