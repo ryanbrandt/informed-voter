@@ -10,45 +10,56 @@ interface Props extends ChartData {}
 const BarChart = (props: Props): React.ReactElement => {
   const node = useRef<SVGSVGElement | null>(null);
 
-  const { x = [2015, 2020, 2040, 2050, 2060, 2080], y = [100, 200] } = props;
+  const { x, y } = props;
 
   useEffect(() => {
-    const w = 1000;
-    const h = 800;
+    const margin = { top: 20, right: 20, bottom: 30, left: 100 };
+    const width = 960 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
 
-    const svg = d3.select(node.current).attr("width", w).attr("height", h);
-
-    const xAxis = d3.scaleBand().range([0, w]).padding(0.4);
-    const yAxis = d3.scaleLinear().range([h, 0]);
-
-    xAxis.domain(x.map((xValue) => xValue.toFixed(0)));
-    yAxis.domain([0, 500]);
-
-    const gXAxis = svg.append("g").attr("transform", `translate(100, 100)`);
-
-    gXAxis
+    const svg = d3
+      .select(node.current)
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", `translate(0, 500)`)
-      .call(d3.axisBottom(xAxis));
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    gXAxis
+    const xAxis = d3
+      .scaleBand()
+      .range([0, width])
+      .padding(0.1)
+      .domain(x.map((xValue) => xValue.toString()));
+
+    svg
       .append("g")
-      .call(
-        d3
-          .axisLeft(yAxis)
-          .tickFormat((d) => d.toString())
-          .ticks(10)
-      )
-      .append("text")
-      .attr("y", 6)
-      .attr("dy", "0.71em")
-      .attr("text-anchor", "end")
-      .text("value");
-  }, [x, y]);
+      .attr("transform", `translate(0, ${height})`)
+      .call(d3.axisBottom(xAxis))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+
+    const yAxis = d3
+      .scaleLinear()
+      .range([height, 0])
+      .domain([0, Math.max(...y)]);
+
+    svg.append("g").call(d3.axisLeft(yAxis).tickFormat((t) => `$ ${t}`));
+
+    svg
+      .selectAll("rect")
+      .data(y)
+      .enter()
+      .append("rect")
+      .style("fill", "#506670c5")
+      .attr("width", xAxis.bandwidth())
+      .attr("x", (d, i) => xAxis(x[i].toString()) || -1)
+      .attr("y", (d) => yAxis(d))
+      .attr("height", (d) => height - yAxis(d));
+  }, []);
 
   return (
     <ChartContainer>
-      <svg className="chart_root" ref={node} />
+      <svg ref={node} />
     </ChartContainer>
   );
 };
