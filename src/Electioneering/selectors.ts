@@ -1,18 +1,19 @@
 import { createSelector } from "reselect";
+import { TwoDimensionalPoint } from "../Charting/types";
 
 import { RootState } from "../store/rootReducer";
-import { CyclesAndTotals, ElectioneeringTotals } from "./types";
+import { ElectioneeringTotals } from "./types";
 
 export const getElectioneeringTotals = (
   state: RootState
 ): Array<ElectioneeringTotals> => state.electioneering.totals;
 
-export const getCyclesAndTotals = createSelector(
+export const getTotalsByCycleChartData = createSelector(
   getElectioneeringTotals,
-  (electioneeringTotals): CyclesAndTotals => {
-    return {
-      cycles: electioneeringTotals.map((result) => result.cycle),
-      totals: electioneeringTotals.map((result) => result.total),
-    };
+  (electioneeringTotals): Array<TwoDimensionalPoint> => {
+    return electioneeringTotals.map((total) => ({
+      x: total.cycle,
+      y: total.total,
+    }));
   }
 );

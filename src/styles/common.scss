@@ -30,14 +30,33 @@ $informed-warn: rgba(201, 18, 18, 0.678);
     color: $informed-warn;
   }
 
-  &-link {
+  &-fade-in {
     cursor: pointer;
     transition: transform 0.5s;
 
     &:hover {
-      transform: scale(1.05);
       color: $informed-gray;
       transition: all 0.5s;
+    }
+  }
+
+  &-opacity-in {
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.5s;
+
+    &:hover {
+      opacity: 1;
+      transition: all 0.5s;
+    }
+  }
+
+  &-link {
+    @extend .app-fade-in;
+
+    &:hover {
+      @extend .app-fade-in;
+      transform: scale(1.05);
     }
   }
 }
