@@ -52,14 +52,9 @@ export default function (
     case t.SET_QUERY: {
       const { query } = action;
 
-      let fixedQuery: string | null = query?.trim() || null;
-      if (fixedQuery && fixedQuery.length < 1) {
-        fixedQuery = null;
-      }
-
       return {
         ...state,
-        query: fixedQuery,
+        query,
       };
     }
 

@@ -30,6 +30,12 @@ $informed-warn: rgba(201, 18, 18, 0.678);
     color: $informed-warn;
   }
 
+  &_informed-dimmed {
+    fill: $informed-gray;
+    color: $informed-gray;
+    opacity: 0.75;
+  }
+
   &-fade-in {
     cursor: pointer;
     transition: transform 0.5s;

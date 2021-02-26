@@ -5,7 +5,7 @@ import { RootState } from "../../store/rootReducer";
 import { getTotalsByCycleChartData } from "../selectors";
 
 import SectionContainer from "../../common/Components/SectionContainer";
-import BarChart from "../../Charting/Components/BarChart";
+import TwoDimensionalChart from "../../Charting/Subcomponents/TwoDimensionalChart";
 import { TwoDimensionalPoint } from "../../Charting/types";
 
 interface StateProps {
@@ -20,7 +20,7 @@ const ElectioneeringTotals = (props: StateProps): React.ReactElement => {
 
   return (
     <SectionContainer description={ELECTIONEERING_TOTALS_DESCRIPTION}>
-      <BarChart data={totalsByCycleData} yAxisTick="$" />
+      <TwoDimensionalChart data={totalsByCycleData} type="bar" />
     </SectionContainer>
   );
 };

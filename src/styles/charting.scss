@@ -1,1 +1,19 @@
+@import "./common.scss";
 
+.chart {
+  &-container {
+    overflow-x: scroll;
+  }
+
+  &_no-data {
+    @extend .flex_center-col;
+    padding: 10px;
+
+    &-content {
+      @extend .app_informed-dimmed;
+      font-size: 24px;
+      padding: 20px;
+      text-align: center;
+    }
+  }
+}

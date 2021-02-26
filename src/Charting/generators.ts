@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { WindowSize } from "../App/hooks";
 
 import {
   BASE_CHART_MARGIN,
@@ -7,21 +8,21 @@ import {
   TRANSITION_DELAY,
   WIDTH_BASE_MARGIN,
 } from "./constants";
-import { Tick, TwoDimensionalPoint } from "./types";
+import { TwoDimensionalPoint } from "./types";
 
 export const drawBarChart = (
-  data: Array<TwoDimensionalPoint>,
   node: React.MutableRefObject<SVGSVGElement | null>,
-  width: number,
-  height: number,
-  yTick?: Tick
+  data: Array<TwoDimensionalPoint>,
+  windowSize: WindowSize
 ): void => {
+  const { width, height } = windowSize;
+
   const chartWidth =
-    Math.max(width - WIDTH_BASE_MARGIN, 960) -
+    Math.max(width - WIDTH_BASE_MARGIN, 480) -
     BASE_CHART_MARGIN.left -
     BASE_CHART_MARGIN.right;
   const chartHeight =
-    Math.max(height - HEIGHT_BASE_MARGIN, 500) -
+    Math.max(height - HEIGHT_BASE_MARGIN, 250) -
     BASE_CHART_MARGIN.top -
     BASE_CHART_MARGIN.bottom;
 
@@ -47,7 +48,7 @@ export const drawBarChart = (
   const xAxis = d3
     .scaleBand()
     .range([0, chartWidth])
-    .padding(0.1)
+    .padding(0.4)
     .domain(data.map((point) => point.x.toString()));
 
   svg
@@ -56,6 +57,9 @@ export const drawBarChart = (
     .call(d3.axisBottom(xAxis))
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
+    .attr("font-size", "14px")
+    .attr("font-family", "Sofia Pro")
+    .attr("font-weight", "600")
     .style("text-anchor", "end");
 
   const yAxis = d3
@@ -63,8 +67,11 @@ export const drawBarChart = (
     .range([chartHeight, 0])
     .domain([0, Math.max(...data.map((point) => point.y))]);
 
-  const tick = yTick ? `${yTick} ` : "";
-  svg.append("g").call(d3.axisLeft(yAxis).tickFormat((t) => `${tick}${t}`));
+  svg
+    .append("g")
+    .call(d3.axisLeft(yAxis).ticks(10, "s"))
+    .attr("font-size", "12px")
+    .attr("font-family", "Sofia Pro");
 
   svg
     .selectAll("rect")
