@@ -8,6 +8,7 @@ import { RootState } from "../../store/rootReducer";
 
 import CandidateHubHeader from "../Subcomponents/CandidateHubHeader";
 import ElectioneeringSection from "../Subcomponents/ElectioneeringSection";
+import IndepdendentExpendituresSection from "../Subcomponents/IndependentExpendituresSection";
 
 interface StateProps {
   processing: boolean;
@@ -20,6 +21,7 @@ const CandidateHub = (props: StateProps): React.ReactElement => {
     <div>
       <CandidateHubHeader />
       <ElectioneeringSection />
+      <IndepdendentExpendituresSection />
       <LoadingOverlay show={processing} />
     </div>
   );

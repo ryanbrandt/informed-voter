@@ -10,12 +10,14 @@ import { FecCandidateInfoResults } from "./types";
 import { fecCandidateInfoResultsParser } from "./parsers";
 import { electioneeringTotalsRequest } from "../Electioneering/actions";
 import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
+import { independentExpendituresTotalsRequest } from "../IndepdentExpenditures/actions";
 
 export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   const { id } = action;
 
   yield put(a.activeCandidateInfoRequest(id));
   yield put(electioneeringTotalsRequest(id));
+  yield put(independentExpendituresTotalsRequest(id));
 }
 
 export function* watchSetActiveCandidate() {

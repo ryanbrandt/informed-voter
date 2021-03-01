@@ -2,7 +2,7 @@ import React from "react";
 
 interface Props {
   description: string;
-  children: React.ReactChildren | React.ReactChild;
+  children: React.ReactNode;
 }
 
 const SectionContainer = (props: Props): React.ReactElement => {

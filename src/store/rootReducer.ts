@@ -7,15 +7,20 @@ import candidateHubReducer, {
 import electioneeringReducer, {
   ElectioneeringState,
 } from "../Electioneering/reducer";
+import independentExpendituresReducer, {
+  IndependentExpendituresState,
+} from "../IndepdentExpenditures/reducer";
 
 export interface RootState {
   search: SearchState;
   candidateHub: CandidateHubState;
   electioneering: ElectioneeringState;
+  independentExpenditures: IndependentExpendituresState;
 }
 
 export default combineReducers<RootState>({
   search: searchReducer,
   candidateHub: candidateHubReducer,
   electioneering: electioneeringReducer,
+  independentExpenditures: independentExpendituresReducer,
 });
