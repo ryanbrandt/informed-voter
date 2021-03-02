@@ -38,7 +38,7 @@ $informed-warn: rgba(201, 18, 18, 0.678);
 
   &-fade-in {
     cursor: pointer;
-    transition: transform 0.5s;
+    transition: all 0.5s;
 
     &:hover {
       color: $informed-gray;
@@ -102,6 +102,33 @@ $informed-warn: rgba(201, 18, 18, 0.678);
 
     @media (min-width: $desktop-min-width) {
       width: 50%;
+    }
+  }
+}
+
+.cycle_selector {
+  &-container {
+    @extend .flex_center-col;
+    padding-bottom: 50px;
+  }
+
+  &-modal {
+    &-content {
+      padding: 30px 50px 50px 50px;
+    }
+
+    &-cycle {
+      @extend .app_informed-dimmed;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 10px;
+
+      &-active {
+        @extend .cycle_selector-modal-cycle;
+        pointer-events: none;
+        color: inherit;
+      }
     }
   }
 }

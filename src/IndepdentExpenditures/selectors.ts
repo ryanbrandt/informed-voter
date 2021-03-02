@@ -24,7 +24,7 @@ export const getIndependentExpenditureCycles = createSelector(
       }
     });
 
-    return uniqueCycles;
+    return uniqueCycles.sort((a, b) => b - a);
   }
 );
 

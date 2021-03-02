@@ -36,11 +36,13 @@ export function* handleIndependentExpendituresTotalsRequest(
 
     const { results } = data;
     const parsedResults = fecIndependetExpendituresTotalsResultsParser(results);
-    const earliestCycle = Math.min(
-      ...parsedResults.map((result) => result.cycle)
-    );
 
-    yield put(a.independetExpendituresTotalsSetActiveCycle(earliestCycle));
+    let latestCycle = -1;
+    if (parsedResults.length > 0) {
+      latestCycle = Math.max(...parsedResults.map((result) => result.cycle));
+    }
+
+    yield put(a.independetExpendituresTotalsSetActiveCycle(latestCycle));
     yield put(a.independentExpendituresTotalsSuccess(parsedResults));
   } catch (e) {
     console.log(`Failed to retrieve independent expenditures totals data ${e}`);

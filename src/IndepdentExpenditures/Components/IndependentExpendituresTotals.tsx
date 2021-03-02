@@ -2,19 +2,18 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { Select } from "handsome-ui";
-
 import { independetExpendituresTotalsSetActiveCycle } from "../actions";
 import {
   getIndependentExpenditureForActiveCycle,
   getIndependentExpenditureCycles,
   getIndependentExpendituresActiveCycle,
 } from "../selectors";
+import { RootState } from "../../store/rootReducer";
+import { TwoDimensionalPoint } from "../../Charting/types";
 
 import TwoDimensionalChart from "../../Charting/Subcomponents/TwoDimensionalChart";
 import SectionContainer from "../../common/Components/SectionContainer";
-import { RootState } from "../../store/rootReducer";
-import { TwoDimensionalPoint } from "../../Charting/types";
+import CycleSelector from "../../common/Components/CycleSelector";
 
 interface StateProps {
   independentExpenditureForCycle: Array<TwoDimensionalPoint>;
@@ -34,20 +33,17 @@ const IndependentExpendituresTotals = (
 
   const {
     independentExpenditureForCycle,
-    availableCycles,
     activeCycle,
     setActiveCycle,
+    availableCycles,
   } = props;
 
   return (
     <SectionContainer description={INDEPENDENT_EXPENDITURES_TOTALS_DESCRIPTION}>
-      <Select
-        label="Cycle"
-        options={availableCycles.map((cycle) =>
-          cycle ? cycle.toString() : ""
-        )}
-        onChange={(value: string) => setActiveCycle(parseInt(value, 10))}
-        value={activeCycle.toString()}
+      <CycleSelector
+        cycles={availableCycles}
+        activeCycle={activeCycle}
+        onChange={(cycle: number) => setActiveCycle(cycle)}
       />
       <TwoDimensionalChart type="bar" data={independentExpenditureForCycle} />
     </SectionContainer>
