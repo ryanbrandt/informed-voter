@@ -5,10 +5,11 @@ import { Dropdown } from "handsome-ui";
 interface Props {
   children: React.ReactChildren | React.ReactChild;
   header: string;
+  defaultOpen?: boolean;
 }
 
 const DropdownSection = (props: Props): React.ReactElement => {
-  const { children, header } = props;
+  const { children, header, defaultOpen } = props;
 
   const _renderHeader = (): React.ReactNode => {
     return <div className="dropdown_section-header">{header}</div>;
@@ -16,7 +17,7 @@ const DropdownSection = (props: Props): React.ReactElement => {
 
   return (
     <div className="dropdown_section-container">
-      <Dropdown heading={_renderHeader()} defaultOpen>
+      <Dropdown heading={_renderHeader()} defaultOpen={defaultOpen}>
         {children}
       </Dropdown>
     </div>

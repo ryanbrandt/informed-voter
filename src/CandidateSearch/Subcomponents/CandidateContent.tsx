@@ -44,7 +44,7 @@ const CandidateContent = (props: Props & DispatchProps): React.ReactElement => {
   return (
     <Dropdown heading={_renderHeading()}>
       <div className="candidate_search-content-container">
-        <Row className="candidate_search-content-row">
+        <Row version="space-between" className="candidate_search-content-row">
           <Column>
             <div>
               <h3>State</h3>

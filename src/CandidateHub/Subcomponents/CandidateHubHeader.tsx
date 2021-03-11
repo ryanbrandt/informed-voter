@@ -37,7 +37,7 @@ const CandidateHubHeader = (props: StateProps): React.ReactElement => {
 
     return (
       <div className="candidate_hub-info-banner">
-        <Row className="candidate_hub-info-container">
+        <Row version="space-evenly" className="candidate_hub-info-container">
           <Column>
             <div className="candidate_hub-info-text">State: {state}</div>
             <div className="candidate_hub-info-text">City: {city}</div>

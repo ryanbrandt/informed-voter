@@ -5,7 +5,7 @@ import DropdownSection from "../../common/Components/DropdownSection";
 
 const ElectioneeringSection = (): React.ReactElement => {
   return (
-    <DropdownSection header="Electioneering Totals">
+    <DropdownSection header="Electioneering Totals" defaultOpen>
       <ElectioneeringTotals />
     </DropdownSection>
   );

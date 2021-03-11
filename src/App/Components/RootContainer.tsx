@@ -59,7 +59,7 @@ const RootContainer = (): React.ReactElement => {
     <WindowSizeContext.Provider value={windowSize}>
       <AppContainer
         className="root-container"
-        header={<SideMenu options={SIDE_MENU_ITEMS} open />}
+        header={<SideMenu options={SIDE_MENU_ITEMS} />}
       >
         <Router history={history}>{routes}</Router>
       </AppContainer>
