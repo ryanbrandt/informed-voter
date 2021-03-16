@@ -1,4 +1,9 @@
 /**
+ * FEC APIs support/oppose indicators
+ */
+export type FecSupportOpposeIndicator = "S" | "O";
+
+/**
  * Political party abbreviations supported by the FEC API
  */
 export type FecPoliticalParty = "DEM" | "REP" | "LIB" | "SOC";

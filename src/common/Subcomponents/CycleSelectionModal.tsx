@@ -13,10 +13,17 @@ interface Props {
 const CycleSelectionModal: React.FunctionComponent<Props> = (
   props: Props
 ): React.ReactElement => {
-  const { open, onClose } = props;
+  const { onClose } = props;
+
+  const _onCycleSelection = (cycle: number): void => {
+    const { onChange } = props;
+
+    onChange(cycle);
+    onClose();
+  };
 
   const _renderCycle = (cycle: number): React.ReactNode => {
-    const { activeCycle, onChange } = props;
+    const { activeCycle } = props;
 
     let activeModifer = "";
     if (cycle === activeCycle) {
@@ -27,14 +34,14 @@ const CycleSelectionModal: React.FunctionComponent<Props> = (
       <div
         key={cycle}
         className={`cycle_selector-modal-cycle${activeModifer}`}
-        onClick={() => onChange(cycle)}
+        onClick={() => _onCycleSelection(cycle)}
       >
         {cycle}
       </div>
     );
   };
 
-  const { cycles } = props;
+  const { cycles, open } = props;
 
   return (
     <Modal open={open} onClose={onClose}>

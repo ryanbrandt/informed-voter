@@ -8,7 +8,7 @@ export const getElectioneeringTotals = (
   state: RootState
 ): Array<ElectioneeringTotals> => state.electioneering.totals;
 
-export const getTotalsByCycleChartData = createSelector(
+export const getElectioneeringTotalsByCycleChartData = createSelector(
   getElectioneeringTotals,
   (electioneeringTotals): Array<TwoDimensionalPoint> => {
     return electioneeringTotals.map((total) => ({

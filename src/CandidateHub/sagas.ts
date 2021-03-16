@@ -5,12 +5,13 @@ import { ApiResponse } from "apisauce";
 import * as t from "./actionTypes";
 import api from "../utils/api";
 import * as a from "./actions";
+import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
 import { BaseFecResponse } from "../common/types";
 import { FecCandidateInfoResults } from "./types";
 import { fecCandidateInfoResultsParser } from "./parsers";
 import { electioneeringTotalsRequest } from "../Electioneering/actions";
-import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
 import { independentExpendituresTotalsRequest } from "../IndepdentExpenditures/actions";
+import { communicationCostsRequest } from "../CommunicationCosts/actions";
 
 export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   const { id } = action;
@@ -18,6 +19,7 @@ export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   yield put(a.activeCandidateInfoRequest(id));
   yield put(electioneeringTotalsRequest(id));
   yield put(independentExpendituresTotalsRequest(id));
+  yield put(communicationCostsRequest(id));
 }
 
 export function* watchSetActiveCandidate() {
