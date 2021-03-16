@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { all, takeLatest, call, put } from "redux-saga/effects";
-import { ApiResponse } from "apisauce";
 
 import * as t from "./actionTypes";
 import * as a from "./actions";
 
-import api from "../utils/api";
-
-import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
-import { BaseFecResponse } from "../common/types";
+import { getAndParse } from "../utils/helpers";
 import { fecIndependetExpendituresTotalsResultsParser } from "./parsers";
-import { FecIndependentExpendituresTotalsResults } from "./types";
+import { IndependentExpendituresTotals } from "./types";
 
 export function* handleIndependentExpendituresTotalsRequest(
   action: a.IIndependentExpendituresTotalsRequest
@@ -18,32 +14,20 @@ export function* handleIndependentExpendituresTotalsRequest(
   const { candidateId } = action;
 
   try {
-    const {
-      ok,
-      status,
-      problem,
-      data = DEFAULT_FEC_API_RESPONSE,
-    }: ApiResponse<
-      BaseFecResponse<FecIndependentExpendituresTotalsResults>
-    > = yield call(
-      api.get,
-      `/schedules/schedule_e/totals/by_candidate/?candidate_id=${candidateId}`
+    const results: Array<IndependentExpendituresTotals> = yield call(() =>
+      getAndParse(
+        `/schedules/schedule_e/totals/by_candidate/?candidate_id=${candidateId}`,
+        fecIndependetExpendituresTotalsResultsParser
+      )
     );
 
-    if (!ok) {
-      throw Error(`Non-OK response: ${status} - ${problem}`);
-    }
-
-    const { results } = data;
-    const parsedResults = fecIndependetExpendituresTotalsResultsParser(results);
-
     let latestCycle = -1;
-    if (parsedResults.length > 0) {
-      latestCycle = Math.max(...parsedResults.map((result) => result.cycle));
+    if (results.length > 0) {
+      latestCycle = Math.max(...results.map((result) => result.cycle));
     }
 
     yield put(a.independetExpendituresTotalsSetActiveCycle(latestCycle));
-    yield put(a.independentExpendituresTotalsSuccess(parsedResults));
+    yield put(a.independentExpendituresTotalsSuccess(results));
   } catch (e) {
     console.log(`Failed to retrieve independent expenditures totals data ${e}`);
   }

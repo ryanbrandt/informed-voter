@@ -1,11 +1,15 @@
+import { IFecParser } from "../utils/types";
 import {
   FecIndependentExpendituresTotalsResults,
   IndependentExpendituresTotals,
 } from "./types";
 
-export function fecIndependetExpendituresTotalsResultsParser(
+export const fecIndependetExpendituresTotalsResultsParser: IFecParser<
+  FecIndependentExpendituresTotalsResults,
+  Array<IndependentExpendituresTotals>
+> = (
   totals: Array<FecIndependentExpendituresTotalsResults>
-): Array<IndependentExpendituresTotals> {
+): Array<IndependentExpendituresTotals> => {
   return totals
     .filter((result) => result.cycle)
     .map((result) => {
@@ -21,4 +25,4 @@ export function fecIndependetExpendituresTotalsResultsParser(
         total: result.total,
       };
     });
-}
+};

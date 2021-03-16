@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { all, takeLatest, call, put } from "redux-saga/effects";
-import { ApiResponse } from "apisauce";
 
 import * as t from "./actionTypes";
 import * as a from "./actions";
 
-import api from "../utils/api";
+import { getAndParse } from "../utils/helpers";
 import { fecCommunicationCostsResultsParser } from "./parsers";
-import { FecCommunicationCostsResults } from "./types";
-import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
-import { BaseFecResponse } from "../common/types";
+import { CommunicationCosts } from "./types";
 
 export function* handleCommunicationCostsRequest(
   action: a.ICommunicationCostsRequest
@@ -17,30 +14,20 @@ export function* handleCommunicationCostsRequest(
   const { candidateId } = action;
 
   try {
-    const {
-      ok,
-      status,
-      problem,
-      data = DEFAULT_FEC_API_RESPONSE,
-    }: ApiResponse<BaseFecResponse<FecCommunicationCostsResults>> = yield call(
-      api.get,
-      `/communication_costs/totals/by_candidate/?candidate_id=${candidateId}`
+    const results: Array<CommunicationCosts> = yield call(() =>
+      getAndParse(
+        `/communication_costs/totals/by_candidate/?candidate_id=${candidateId}`,
+        fecCommunicationCostsResultsParser
+      )
     );
 
-    if (!ok) {
-      throw Error(`Non-OK response: ${status} - ${problem}`);
-    }
-
-    const { results } = data;
-    const parsedResults = fecCommunicationCostsResultsParser(results);
-
     let latestCycle = -1;
-    if (parsedResults.length > 0) {
-      latestCycle = Math.max(...parsedResults.map((result) => result.cycle));
+    if (results.length > 0) {
+      latestCycle = Math.max(...results.map((result) => result.cycle));
     }
 
     yield put(a.communicationCostsSetActiveCycle(latestCycle));
-    yield put(a.communicationCostsSuccess(parsedResults));
+    yield put(a.communicationCostsSuccess(results));
   } catch (e) {
     console.log(`Failed to retrieve communication costs data ${e}`);
   }

@@ -1,8 +1,12 @@
+import { IFecParser } from "../utils/types";
 import { FecElectioneeringTotalsResults, ElectioneeringTotals } from "./types";
 
-export function fecElectioneeringTotalsResultsParser(
+export const fecElectioneeringTotalsResultsParser: IFecParser<
+  FecElectioneeringTotalsResults,
+  Array<ElectioneeringTotals>
+> = (
   totals: Array<FecElectioneeringTotalsResults>
-): Array<ElectioneeringTotals> {
+): Array<ElectioneeringTotals> => {
   return totals.map((result) => {
     return {
       total: result.total,
@@ -10,4 +14,4 @@ export function fecElectioneeringTotalsResultsParser(
       candidateId: result.candidate_id,
     };
   });
-}
+};

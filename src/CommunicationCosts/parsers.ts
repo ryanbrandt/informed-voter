@@ -1,8 +1,10 @@
+import { IFecParser } from "../utils/types";
 import { CommunicationCosts, FecCommunicationCostsResults } from "./types";
 
-export function fecCommunicationCostsResultsParser(
-  costs: Array<FecCommunicationCostsResults>
-): Array<CommunicationCosts> {
+export const fecCommunicationCostsResultsParser: IFecParser<
+  FecCommunicationCostsResults,
+  Array<CommunicationCosts>
+> = (costs: Array<FecCommunicationCostsResults>): Array<CommunicationCosts> => {
   return costs
     .filter((result) => result.cycle)
     .map((result) => {
@@ -18,4 +20,4 @@ export function fecCommunicationCostsResultsParser(
         total: result.total,
       };
     });
-}
+};

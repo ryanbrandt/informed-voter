@@ -129,7 +129,7 @@ export function* handlePageRequest(page: number) {
 }
 
 export function* handleNextPageRequest() {
-  const page = yield select(getCurrentPage);
+  const page: number = yield select(getCurrentPage);
 
   yield call(handlePageRequest, page + 1);
 }
@@ -139,7 +139,7 @@ export function* watchNextPageRequest() {
 }
 
 export function* handlePrevPageRequest() {
-  const page = yield select(getCurrentPage);
+  const page: number = yield select(getCurrentPage);
 
   yield call(handlePageRequest, page - 1);
 }

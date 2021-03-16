@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { all, takeLatest, put, call, delay } from "redux-saga/effects";
-import { ApiResponse } from "apisauce";
 
 import * as t from "./actionTypes";
-import api from "../utils/api";
 import * as a from "./actions";
-import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
-import { BaseFecResponse } from "../common/types";
-import { FecCandidateInfoResults } from "./types";
+
+import { getAndParse } from "../utils/helpers";
+import { CandidateInfo } from "./types";
 import { fecCandidateInfoResultsParser } from "./parsers";
 import { electioneeringTotalsRequest } from "../Electioneering/actions";
 import { independentExpendituresTotalsRequest } from "../IndepdentExpenditures/actions";
@@ -34,25 +32,11 @@ export function* handleActiveCandidateInfoRequest(
   const { candidateId } = action;
 
   try {
-    const {
-      ok,
-      status,
-      problem,
-      data = DEFAULT_FEC_API_RESPONSE,
-    }: ApiResponse<BaseFecResponse<FecCandidateInfoResults>> = yield call(
-      api.get,
-      `/candidate/${candidateId}`
+    const results: CandidateInfo = yield call(() =>
+      getAndParse(`/candidate/${candidateId}`, fecCandidateInfoResultsParser)
     );
 
-    if (!ok) {
-      throw Error(`Non-OK response: ${status} - ${problem}`);
-    }
-
-    const { results } = data;
-    const [candidateInfo] = results;
-
-    const parsedResults = fecCandidateInfoResultsParser(candidateInfo);
-    yield put(a.activeCandidateInfoSuccess(parsedResults));
+    yield put(a.activeCandidateInfoSuccess(results));
   } catch (e) {
     console.log(`Failed to retrieve candidate info ${e}`);
   }

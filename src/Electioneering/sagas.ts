@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { all, takeLatest, call, put } from "redux-saga/effects";
-import { ApiResponse } from "apisauce";
 
 import * as t from "./actionTypes";
 import * as a from "./actions";
 
-import api from "../utils/api";
-import { FecElectioneeringTotalsResults } from "./types";
-import { DEFAULT_FEC_API_RESPONSE } from "../common/constants";
-import { BaseFecResponse } from "../common/types";
+import { getAndParse } from "../utils/helpers";
+import { ElectioneeringTotals } from "./types";
 import { fecElectioneeringTotalsResultsParser } from "./parsers";
 
 export function* handleElectioneeringTotalsRequest(
@@ -17,26 +14,14 @@ export function* handleElectioneeringTotalsRequest(
   const { candidateId } = action;
 
   try {
-    const {
-      ok,
-      status,
-      problem,
-      data = DEFAULT_FEC_API_RESPONSE,
-    }: ApiResponse<
-      BaseFecResponse<FecElectioneeringTotalsResults>
-    > = yield call(
-      api.get,
-      `/electioneering/totals/by_candidate/?candidate_id=${candidateId}`
+    const results: Array<ElectioneeringTotals> = yield call(() =>
+      getAndParse(
+        `/electioneering/totals/by_candidate/?candidate_id=${candidateId}`,
+        fecElectioneeringTotalsResultsParser
+      )
     );
 
-    if (!ok) {
-      throw Error(`Non-OK response: ${status} - ${problem}`);
-    }
-
-    const { results } = data;
-    const parsedResults = fecElectioneeringTotalsResultsParser(results);
-
-    yield put(a.electioneeringTotalsSuccess(parsedResults));
+    yield put(a.electioneeringTotalsSuccess(results));
   } catch (e) {
     console.log(`Failed to retrieve electioneering totals data ${e}`);
   }
