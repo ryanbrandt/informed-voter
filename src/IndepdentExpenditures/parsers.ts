@@ -1,4 +1,5 @@
 import { IFecParser } from "../utils/types";
+import { findUnmergedCycleData } from "../utils/helpers";
 import {
   FecIndependentExpendituresTotalsResults,
   IndependentExpendituresTotals,
@@ -10,7 +11,7 @@ export const fecIndependetExpendituresTotalsResultsParser: IFecParser<
 > = (
   totals: Array<FecIndependentExpendituresTotalsResults>
 ): Array<IndependentExpendituresTotals> => {
-  return totals
+  const mapped = totals
     .filter((result) => result.cycle)
     .map((result) => {
       let oppose = false;
@@ -25,4 +26,30 @@ export const fecIndependetExpendituresTotalsResultsParser: IFecParser<
         total: result.total,
       };
     });
+
+  const merged: Array<IndependentExpendituresTotals> = [];
+  mapped.forEach((result) => {
+    const unmergedMatchIndex = findUnmergedCycleData(
+      mapped,
+      result,
+      ["oppose"],
+      ["total"]
+    );
+
+    if (unmergedMatchIndex > -1) {
+      const existingUmergedItem = mapped[unmergedMatchIndex];
+
+      const { total: currentItemTotal } = result;
+      const { total: existingItemTotal } = existingUmergedItem;
+
+      merged[unmergedMatchIndex] = {
+        ...existingUmergedItem,
+        total: currentItemTotal + existingItemTotal,
+      };
+    } else {
+      merged.push(result);
+    }
+  });
+
+  return merged;
 };

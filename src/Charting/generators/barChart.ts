@@ -1,19 +1,25 @@
 import * as d3 from "d3";
-import { WindowSize } from "../App/hooks";
+import { WindowSize } from "../../App/types";
 
+import {
+  IChartGenerator,
+  ChartGeneratorOptions,
+  TwoDimensionalPoint,
+} from "../types";
 import {
   BASE_CHART_MARGIN,
   HEIGHT_BASE_MARGIN,
   INFORMED_GRAY,
   TRANSITION_DELAY,
   WIDTH_BASE_MARGIN,
-} from "./constants";
-import { TwoDimensionalPoint } from "./types";
+} from "../constants";
+import { numberToStringWithCommas } from "../helpers";
 
-export const drawBarChart = (
+export const drawBarChart: IChartGenerator<TwoDimensionalPoint> = (
   node: React.MutableRefObject<SVGSVGElement | null>,
   data: Array<TwoDimensionalPoint>,
-  windowSize: WindowSize
+  windowSize: WindowSize,
+  options?: ChartGeneratorOptions
 ): void => {
   const { width, height } = windowSize;
 
@@ -57,7 +63,7 @@ export const drawBarChart = (
     .call(d3.axisBottom(xAxis))
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
-    .attr("font-size", "14px")
+    .attr("font-size", "18px")
     .attr("font-family", "Sofia Pro")
     .attr("font-weight", "600")
     .style("text-anchor", "end");
@@ -72,6 +78,29 @@ export const drawBarChart = (
     .call(d3.axisLeft(yAxis).ticks(10, "s"))
     .attr("font-size", "12px")
     .attr("font-family", "Sofia Pro");
+
+  const { labelOptions = {} } = options || {};
+  const { hasLabel, labelTick } = labelOptions;
+
+  if (hasLabel) {
+    let tick = "";
+    if (labelTick) {
+      tick = labelTick;
+    }
+
+    svg
+      .selectAll("rect")
+      .data(data)
+      .enter()
+      .append("text")
+      .text((d) => `${tick} ${numberToStringWithCommas(d.y)}`)
+      .attr("x", (d) => (xAxis(d.x.toString()) || -1) + xAxis.bandwidth() / 2)
+      .attr("y", (d) => yAxis(d.y) - 10)
+      .attr("font-size", "24px")
+      .attr("font-weight", "600")
+      .attr("font-family", "Sofia Pro")
+      .attr("text-anchor", "middle");
+  }
 
   svg
     .selectAll("rect")

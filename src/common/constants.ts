@@ -28,7 +28,7 @@ export const PARTY_API_MAP: { [key: string]: FecPoliticalParty } = {
 
 export const OFFICE_API_MAP: { [key: string]: FecOffice } = {
   House: "H",
-  Sentate: "S",
+  Senate: "S",
   President: "P",
 };
 

@@ -1,11 +1,12 @@
 import { IFecParser } from "../utils/types";
+import { findUnmergedCycleData } from "../utils/helpers";
 import { CommunicationCosts, FecCommunicationCostsResults } from "./types";
 
 export const fecCommunicationCostsResultsParser: IFecParser<
   FecCommunicationCostsResults,
   Array<CommunicationCosts>
 > = (costs: Array<FecCommunicationCostsResults>): Array<CommunicationCosts> => {
-  return costs
+  const mapped = costs
     .filter((result) => result.cycle)
     .map((result) => {
       let oppose = false;
@@ -20,4 +21,30 @@ export const fecCommunicationCostsResultsParser: IFecParser<
         total: result.total,
       };
     });
+
+  const merged: Array<CommunicationCosts> = [];
+  mapped.forEach((result) => {
+    const unmergedMatchIndex = findUnmergedCycleData(
+      mapped,
+      result,
+      ["oppose"],
+      ["total"]
+    );
+
+    if (unmergedMatchIndex > -1) {
+      const existingUmergedItem = mapped[unmergedMatchIndex];
+
+      const { total: currentItemTotal } = result;
+      const { total: existingItemTotal } = existingUmergedItem;
+
+      merged[unmergedMatchIndex] = {
+        ...existingUmergedItem,
+        total: currentItemTotal + existingItemTotal,
+      };
+    } else {
+      merged.push(result);
+    }
+  });
+
+  return merged;
 };

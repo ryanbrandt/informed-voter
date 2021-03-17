@@ -63,7 +63,10 @@ const CandidateHubHeader = (props: StateProps): React.ReactElement => {
     return (
       <Breadcrumbs
         crumbs={[
-          { title: "Candidate Search", action: () => history.push("/") },
+          {
+            title: "Candidate Search",
+            action: () => history.push("/candidate-search"),
+          },
           {
             title: `${name} for ${office}`,
             disabled: true,

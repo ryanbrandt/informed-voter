@@ -42,7 +42,7 @@ const Landing = (): React.ReactElement => {
     return (
       <div
         className="landing_start"
-        onClick={() => history.push("/candidate-search")}
+        onClick={() => history.replace("/candidate-search")}
       >
         Get Informed
         <Chevron className="landing_next-chevron" width={50} height={50} />

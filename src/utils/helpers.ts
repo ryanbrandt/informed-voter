@@ -24,3 +24,35 @@ export const getAndParse = async <T, U>(
 
   return parser(results);
 };
+
+// linting lib error, need to parameterize this for only CycleData
+export const findUnmergedCycleData = (
+  data: Array<any>,
+  current: any,
+  additionalKeysToMatch: Array<string>,
+  keysToNotMatch: Array<string>
+): number =>
+  data.reduce((n, item, i) => {
+    let result = n;
+
+    if (item.cycle === current.cycle) {
+      let isUnmergedMatch = true;
+      additionalKeysToMatch.forEach((key) => {
+        if (item[key] !== current[key]) {
+          isUnmergedMatch = false;
+        }
+      });
+
+      keysToNotMatch.forEach((key) => {
+        if (item[key] === current[key]) {
+          isUnmergedMatch = false;
+        }
+      });
+
+      if (isUnmergedMatch) {
+        result = i;
+      }
+    }
+
+    return result;
+  }, -1);

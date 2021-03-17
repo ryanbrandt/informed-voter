@@ -49,3 +49,12 @@ export interface BaseFecResponse<T> {
   pagination: FecPaginationResponse;
   results: Array<T>;
 }
+
+/**
+ * @interface ByCycleData
+ * Models the base structure for FEC data which is by the cycle
+ */
+export interface ByCycleData {
+  [key: string]: any;
+  cycle: number;
+}

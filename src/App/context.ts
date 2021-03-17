@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { WindowSize } from "./hooks";
+import { WindowSize } from "./types";
 
 export const WindowSizeContext = createContext<WindowSize>({
   width: 0,
