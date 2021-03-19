@@ -1,68 +1,68 @@
 @import "./common.scss";
 
 .landing {
-    &_container {
-        @extend .flex_center-col;
-    }
+  &_container {
+    @extend .flex_center-col;
+  }
 
-    &_title {
-        font-size: 48px;
-        font-weight: 600;
-    }
+  &_title {
+    font-size: 48px;
+    font-weight: 600;
+  }
 
-    &_content {
-        color: $informed-gray;
-        font-size: 18px;
-        font-weight: 600;
-        margin: 20px;
-    }
+  &_content {
+    color: $informed-gray;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 20px;
+  }
 
-    &_link-section {
-        padding: 50px;
-        width: 50vw;
-    }
+  &_link-section {
+    width: 50vw;
+  }
 
-    &_link {
-        @extend .app-opacity-in;
-        @extend .flex_center-col;
-        color: $informed-gray;
-        fill: $informed-gray;
-        font-size: 18px;
-        margin-right: 10px;
-    }
+  &_link {
+    @extend .app-opacity-in;
+    @extend .flex_center-col;
+    color: $informed-gray;
+    fill: $informed-gray;
+    font-size: 18px;
+    margin-right: 10px;
+    padding: 10px;
+  }
 
-    &_start {
-        @extend .app-opacity-in;
-        @extend .flex_center-col;
-        color: $informed-gray;
-        padding: 20px;
-        font-size: 24px;
-        font-weight: 600;
-    }
+  &_start {
+    @extend .app-opacity-in;
+    @extend .flex_center-col;
+    color: $informed-gray;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: 600;
+  }
 
-    &_svg {
-        fill: $informed-gray;
-        margin: 50px;
-    }
+  &_svg {
+    fill: $informed-gray;
+    margin: 50px;
+  }
 
-    &_next-chevron {
-        fill: $informed-gray;
-        padding: 20px;
-        cursor: pointer;
-        animation: pulse 2.5s infinite;
-    }
+  &_next-chevron {
+    fill: $informed-gray;
+    padding: 20px;
+    cursor: pointer;
+    animation: pulse 2.5s infinite;
+  }
 }
 
 @keyframes pulse {
-	0% {
-		transform: scale(0.95);
-	}
+  0% {
+    transform: scale(0.95);
+  }
 
-	50% {
-		transform: scale(1.25);
-	}
+  50% {
+    transform: scale(1.25);
+  }
 
-	100% {
-		transform: scale(0.95);
-	}
+  100% {
+    transform: scale(0.95);
+  }
 }

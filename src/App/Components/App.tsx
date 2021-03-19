@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 
 import configureStore from "../../store/store";
 
+import ErrorBoundary from "./ErrorBoundary";
 import RootContainer from "./RootContainer";
 
 const App = (): React.ReactElement => {
@@ -10,9 +11,11 @@ const App = (): React.ReactElement => {
 
   return (
     <Provider store={store}>
-      <div className="App">
-        <RootContainer />
-      </div>
+      <ErrorBoundary>
+        <div className="App">
+          <RootContainer />
+        </div>
+      </ErrorBoundary>
     </Provider>
   );
 };

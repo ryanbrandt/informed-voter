@@ -14,7 +14,7 @@
     "window": true
   },
   "rules": {
-    "no-bitwise": 0,
+    "no-bitwise": 1,
     "no-array-constructor": "off",
     "func-names": ["error", "never"],
     "no-underscore-dangle": "off",

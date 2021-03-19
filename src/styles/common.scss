@@ -65,6 +65,12 @@ $informed-warn: rgba(201, 18, 18, 0.678);
       transform: scale(1.05);
     }
   }
+
+  &_error-screen {
+    @extend .flex_center-col;
+    flex-wrap: wrap;
+    margin: 100px;
+  }
 }
 
 .removable_badge {
