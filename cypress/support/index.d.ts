@@ -23,5 +23,12 @@ declare namespace Cypress {
      * @example cy.candidateSearchOffice('Congress')
      */
     candidateSearchOffice(office: string): Chainable<Element>;
+
+    /**
+     * Custom command to grab collection of table rows (tr's) from the
+     * candidate results table
+     * @example cy.getCandidateTableRows().eq(0).should("contain", "something")
+     */
+    getCandidateTableRows(): Chainable<Element>;
   }
 }

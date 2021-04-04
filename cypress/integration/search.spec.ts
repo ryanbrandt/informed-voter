@@ -58,3 +58,83 @@ describe("Candidate search inputs", () => {
     getSelectAtIndex(1).should("have.value", "");
   });
 });
+
+describe("Search pagination", () => {
+  const PAGING_DISABLED_CLASS = "page-disabled";
+
+  before(() => {
+    cy.goToSearch();
+  });
+
+  function getPaginationContainer() {
+    return cy.get(".paging_controller-container");
+  }
+
+  function getPageLeft() {
+    return cy.get(".page-left").eq(0);
+  }
+
+  function getPageRight() {
+    return cy.get(".page-right").eq(0);
+  }
+
+  it("Paginates search results", () => {
+    getPaginationContainer().should("be.visible");
+    getPageLeft().should("have.class", PAGING_DISABLED_CLASS);
+    getPageRight().should("not.have.class", PAGING_DISABLED_CLASS);
+  });
+
+  it("Moves through pages with pagination controls", () => {
+    cy.getCandidateTableRows().then((firstPageChildren) => {
+      getPageRight().click();
+
+      cy.getCandidateTableRows().then((secondPageChildren) => {
+        expect(firstPageChildren).not.deep.equal(secondPageChildren);
+      });
+    });
+  });
+});
+
+describe("Candidate results rows", () => {
+  before(() => {
+    cy.goToSearch();
+  });
+
+  function getFirstRow() {
+    return cy.getCandidateTableRows().eq(0);
+  }
+
+  function toggleFirstRow() {
+    getFirstRow().find(".dropdown_container_masthead").click();
+  }
+
+  function assertDropdown(open: boolean) {
+    let classSelector = ".dropdown-closed";
+    if (open) {
+      classSelector = ".dropdown-open";
+    }
+
+    getFirstRow().find(classSelector).should("exist");
+  }
+
+  it("Toggles open/closed with a click", () => {
+    assertDropdown(false);
+    toggleFirstRow();
+    assertDropdown(true);
+    toggleFirstRow();
+    assertDropdown(false);
+    toggleFirstRow();
+    assertDropdown(true);
+    toggleFirstRow();
+    assertDropdown(false);
+  });
+
+  it("Displays state, district, office and party summary information when open", () => {
+    toggleFirstRow();
+    getFirstRow()
+      .should("contain", "Office")
+      .should("contain", "District")
+      .should("contain", "State")
+      .should("contain", "Party");
+  });
+});

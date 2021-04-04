@@ -15,3 +15,7 @@ Cypress.Commands.add("candidateSearchParty", (party: string) => {
 Cypress.Commands.add("candidateSearchOffice", (party: string) => {
   cy.get(".select_container").eq(1).find("select").select(party);
 });
+
+Cypress.Commands.add("getCandidateTableRows", () => {
+  cy.get(".candidate_search-table").get("tbody").children();
+});
