@@ -1,13 +1,16 @@
-import React, { Fragment } from "react";
+import React, { useState, Fragment } from "react";
 
 import { Button } from "handsome-ui";
 
-interface Props {}
+import CitationModal from "../Subcomponents/CitationModal";
 
-const CitationButton = (props: Props) => {
+const CitationButton = (): React.ReactElement => {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <Fragment>
-      <Button title="Cite This Page" onClick={() => null} />
+      <Button title="Cite This Page" onClick={() => setShowModal(true)} round />
+      <CitationModal open={showModal} onClose={() => setShowModal(false)} />
     </Fragment>
   );
 };
