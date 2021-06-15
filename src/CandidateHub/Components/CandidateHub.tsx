@@ -25,7 +25,8 @@ interface DispatchProps {
 const CandidateHub = (
   props: StateProps & DispatchProps
 ): React.ReactElement => {
-  usePathParameters((id) => {
+  usePathParameters<{ id: string }>((params) => {
+    const { id } = params;
     const { setCandidate } = props;
 
     setCandidate(id);

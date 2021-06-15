@@ -1,17 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 import { Button, Spinner } from "handsome-ui";
 
-import { candidateSearchRequest } from "../actions";
+import {
+  candidateSearchRequest,
+  setOffice,
+  setPartyAffiliation,
+  setQuery,
+} from "../actions";
 import { getSearchProcessing } from "../selectors";
+import { useQueryParameters } from "../../App/hooks";
+
+import { Office, PoliticalParty } from "../../common/types";
+import { RootState } from "../../store/rootReducer";
 
 import CandidateSearchInput from "../Subcomponents/CandidateSearchInput";
 import CandidateSearchSelections from "../Subcomponents/CandidateSearchSelections";
 import CandidateSearchStatus from "../Subcomponents/CandidateSearchStatus";
 import CandidateTable from "./CandidateTable";
-import { RootState } from "../../store/rootReducer";
 
 interface StateProps {
   processing: boolean;
@@ -19,6 +27,15 @@ interface StateProps {
 
 interface DispatchProps {
   searchCandidates: () => void;
+  setCandidateQuery: (query: string | null) => void;
+  setCandidateOffice: (office: Office | null) => void;
+  setCandidateParty: (party: PoliticalParty | null) => void;
+}
+
+interface SearchQueryParameters {
+  query: string | null;
+  party: PoliticalParty | null;
+  office: Office | null;
 }
 
 const CandidateSearch = (
@@ -26,9 +43,16 @@ const CandidateSearch = (
 ): React.ReactElement => {
   const { searchCandidates } = props;
 
-  useEffect(() => {
+  useQueryParameters<SearchQueryParameters>((params) => {
+    const { setCandidateQuery, setCandidateParty, setCandidateOffice } = props;
+    const { query, party, office } = params;
+
+    setCandidateQuery(query);
+    setCandidateParty(party);
+    setCandidateOffice(office);
+
     searchCandidates();
-  }, [searchCandidates]);
+  });
 
   const { processing } = props;
 
@@ -59,6 +83,10 @@ const mapStateToProps = (state: RootState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   searchCandidates: () => dispatch(candidateSearchRequest()),
+  setCandidateQuery: (query: string | null) => dispatch(setQuery(query)),
+  setCandidateOffice: (office: Office | null) => dispatch(setOffice(office)),
+  setCandidateParty: (party: PoliticalParty | null) =>
+    dispatch(setPartyAffiliation(party)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CandidateSearch);

@@ -1,7 +1,9 @@
 import { useLayoutEffect, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { WindowSize } from "./types";
+
+type GenericEffectCallback<T> = (params: T) => void;
 
 export const useWindowSize = (): WindowSize => {
   const [size, setSize] = useState<WindowSize>({ width: 0, height: 0 });
@@ -22,18 +24,36 @@ export const useWindowSize = (): WindowSize => {
   return size;
 };
 
-interface PathParameters {
-  id: string;
-}
-
-type PathParameterEffectCallback = (id: string) => void;
-
-export const usePathParameters = (
-  effectCallback: PathParameterEffectCallback
+export const usePathParameters = <T>(
+  effectCallback: GenericEffectCallback<T>
 ): void => {
-  const { id } = useParams<PathParameters>();
+  const params = useParams<T>();
 
   useEffect(() => {
-    effectCallback(id);
-  }, [id]);
+    effectCallback(params);
+  }, [params]);
+};
+
+const queryStringToObject = <T>(queryString: string): T => {
+  return decodeURIComponent(queryString)
+    .replace("?", "")
+    .split("&")
+    .reduce((parsedParams, param) => {
+      const [key, value] = param.split("=");
+
+      return { ...parsedParams, [key]: value };
+    }, {}) as T;
+};
+
+export const useQueryParameters = <T>(
+  effectCallback: GenericEffectCallback<T>
+): void => {
+  const location = useLocation<T>();
+  const { search } = location;
+
+  useEffect(() => {
+    const params = queryStringToObject<T>(search);
+
+    effectCallback(params);
+  }, [search]);
 };

@@ -7,13 +7,18 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended"
   ],
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "globals": {
     "localStorage": true,
     "document": true,
     "window": true
   },
   "rules": {
+    "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/ban-types": "warn",
+    "react/require-default-props": "warn",
+    "react/no-unused-prop-types": "warn",
+    "no-use-before-define": "warn",
     "no-bitwise": 1,
     "no-array-constructor": "off",
     "func-names": ["error", "never"],
