@@ -1,0 +1,34 @@
+@import "./common.scss";
+
+$copy-btn-margin: 20px;
+
+.citation {
+  &_modal {
+    @media (min-width: $desktop-min-width) {
+      max-width: 50%;
+    }
+
+    &-container {
+      padding: 30px;
+    }
+
+    &-copy-btn {
+      @extend .app-opacity-in;
+      margin-bottom: $copy-btn-margin;
+      width: fit-content;
+    }
+
+    &-copied-info {
+      margin-bottom: $copy-btn-margin;
+    }
+
+    &-copy-container {
+      font-style: italic;
+      font-weight: 600;
+
+      @media (min-width: $desktop-min-width) {
+        white-space: pre-wrap;
+      }
+    }
+  }
+}

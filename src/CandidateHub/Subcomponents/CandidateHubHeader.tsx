@@ -9,6 +9,8 @@ import { getCandidateInfo } from "../selectors";
 import { CandidateInfo } from "../types";
 import { history } from "../../routes";
 
+import CitationButton from "../../Citations/Components/CitationButton";
+
 interface StateProps {
   candidateInfo: CandidateInfo | null;
 }
@@ -79,7 +81,10 @@ const CandidateHubHeader = (props: StateProps): React.ReactElement => {
 
   return (
     <div>
-      {_renderBreadCrumbs()}
+      <Row version="space-between">
+        {_renderBreadCrumbs()}
+        <CitationButton />
+      </Row>
       <div className="candidate_hub-header">
         {name} for {office}
       </div>

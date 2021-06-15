@@ -72,6 +72,7 @@ $table-section-margin: 2vh;
   }
 
   &-content-container {
+    overflow: hidden;
     padding: 10px 20px 10px 20px;
     @media (min-width: $desktop-min-width) {
       padding: 10px 100px 10px 100px;
