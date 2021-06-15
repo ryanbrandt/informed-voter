@@ -15,6 +15,7 @@ $copy-btn-margin: 20px;
     &-copy-btn {
       @extend .app-opacity-in;
       margin-bottom: $copy-btn-margin;
+      width: fit-content;
     }
 
     &-copied-info {

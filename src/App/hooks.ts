@@ -1,4 +1,5 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import { WindowSize } from "./types";
 
@@ -19,4 +20,20 @@ export const useWindowSize = (): WindowSize => {
   }, []);
 
   return size;
+};
+
+interface PathParameters {
+  id: string;
+}
+
+type PathParameterEffectCallback = (id: string) => void;
+
+export const usePathParameters = (
+  effectCallback: PathParameterEffectCallback
+): void => {
+  const { id } = useParams<PathParameters>();
+
+  useEffect(() => {
+    effectCallback(id);
+  }, [id]);
 };

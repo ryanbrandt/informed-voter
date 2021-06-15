@@ -1,10 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
 import { LoadingOverlay } from "handsome-ui";
 
 import { getCandidateHubProcessing } from "../selectors";
 import { RootState } from "../../store/rootReducer";
+import { setActiveCandidate } from "../actions";
+import { usePathParameters } from "../../App/hooks";
 
 import CandidateHubHeader from "../Subcomponents/CandidateHubHeader";
 import ElectioneeringSection from "../Subcomponents/ElectioneeringSection";
@@ -15,7 +18,19 @@ interface StateProps {
   processing: boolean;
 }
 
-const CandidateHub = (props: StateProps): React.ReactElement => {
+interface DispatchProps {
+  setCandidate: (id: string) => void;
+}
+
+const CandidateHub = (
+  props: StateProps & DispatchProps
+): React.ReactElement => {
+  usePathParameters((id) => {
+    const { setCandidate } = props;
+
+    setCandidate(id);
+  });
+
   const { processing } = props;
 
   return (
@@ -33,4 +48,8 @@ const mapStateToProps = (state: RootState): StateProps => ({
   processing: getCandidateHubProcessing(state),
 });
 
-export default connect(mapStateToProps)(CandidateHub);
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  setCandidate: (id: string) => dispatch(setActiveCandidate(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CandidateHub);

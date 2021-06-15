@@ -1,23 +1,15 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
 
 import { Column, Dropdown, Row } from "handsome-ui";
 
 import { SearchResults } from "../types";
-import { setActiveCandidate } from "../../CandidateHub/actions";
-import { RootState } from "../../store/rootReducer";
 import { history } from "../../routes";
 
 interface Props {
   candidate: SearchResults;
 }
 
-interface DispatchProps {
-  setCandidateActive: (id: string) => void;
-}
-
-const CandidateContent = (props: Props & DispatchProps): React.ReactElement => {
+const CandidateContent = (props: Props): React.ReactElement => {
   const { candidate } = props;
 
   const _renderHeading = (): React.ReactNode => {
@@ -31,10 +23,7 @@ const CandidateContent = (props: Props & DispatchProps): React.ReactElement => {
   };
 
   const onSeeFullData = (): void => {
-    const { setCandidateActive } = props;
-
     const { id } = candidate;
-    setCandidateActive(id);
 
     history.push(`/candidate-hub/${id}`);
   };
@@ -74,11 +63,4 @@ const CandidateContent = (props: Props & DispatchProps): React.ReactElement => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  setCandidateActive: (id: string) => dispatch(setActiveCandidate(id)),
-});
-
-export default connect<void, DispatchProps, Props, RootState>(
-  null,
-  mapDispatchToProps
-)(CandidateContent);
+export default CandidateContent;
