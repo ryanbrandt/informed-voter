@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Chevron, Row, Github, WorldWideWeb } from "handsome-ui";
+import { Chevron, Row, Github, WorldWideWeb, Button } from "handsome-ui";
 
 import { history } from "../../routes";
 
@@ -38,14 +38,16 @@ const Landing = (): React.ReactElement => {
     );
   };
 
-  const _renderNextSection = (): React.ReactNode => {
+  const _renderSearchSection = (): React.ReactNode => {
     return (
-      <div
-        className="landing_start"
-        onClick={() => history.replace("/candidate-search")}
-      >
-        Get Informed
-        <Chevron className="landing_next-chevron" width={50} height={50} />
+      <div className="landing_search-container">
+        <Button
+          className="landing_start"
+          title="Get Started"
+          onClick={() => history.replace("/candidate-search")}
+          inverting
+          round
+        />
       </div>
     );
   };
@@ -59,7 +61,7 @@ const Landing = (): React.ReactElement => {
       </div>
       <VotingBoxSvg className="landing_svg" />
       {_renderLinkSection()}
-      {_renderNextSection()}
+      {_renderSearchSection()}
     </div>
   );
 };

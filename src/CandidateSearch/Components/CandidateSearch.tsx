@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
-import { Button, Spinner } from "handsome-ui";
+import { Button, BounceLouder } from "handsome-ui";
 
 import {
   candidateSearchRequest,
@@ -69,7 +69,7 @@ const CandidateSearch = (
       />
       <CandidateSearchStatus />
       {processing ? (
-        <Spinner className="candidate_search-loader" />
+        <BounceLouder className="candidate_search-loader" />
       ) : (
         <CandidateTable />
       )}
