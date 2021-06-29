@@ -6,6 +6,8 @@ import {
   BaseFecResponse,
 } from "./types";
 
+export const ONE_SECOND_MS = 1000;
+
 export const DEFAULT_FEC_API_RESPONSE: BaseFecResponse<any> = {
   api_version: "-1",
   pagination: {
