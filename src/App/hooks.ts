@@ -1,6 +1,7 @@
 import { useLayoutEffect, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 
+import { queryStringToObject } from "../utils/helpers";
 import { WindowSize } from "./types";
 
 type GenericEffectCallback<T> = (params: T) => void;
@@ -32,17 +33,6 @@ export const usePathParameters = <T>(
   useEffect(() => {
     effectCallback(params);
   }, [params]);
-};
-
-const queryStringToObject = <T>(queryString: string): T => {
-  return decodeURIComponent(queryString)
-    .replace("?", "")
-    .split("&")
-    .reduce((parsedParams, param) => {
-      const [key, value] = param.split("=");
-
-      return { ...parsedParams, [key]: value };
-    }, {}) as T;
 };
 
 export const useQueryParameters = <T>(

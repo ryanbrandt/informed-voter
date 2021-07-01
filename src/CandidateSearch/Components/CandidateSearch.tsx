@@ -10,18 +10,33 @@ import {
   setPartyAffiliation,
   setQuery,
 } from "../actions";
-import { getSearchProcessing } from "../selectors";
+import {
+  getSearchProcessing,
+  getOffice,
+  getPartyAffiliation,
+  getQuery,
+} from "../selectors";
 import { useQueryParameters } from "../../App/hooks";
 
 import { Office, PoliticalParty } from "../../common/types";
 import { RootState } from "../../store/rootReducer";
+import { history } from "../../routes";
+
+import { objectToQueryString } from "../../utils/helpers";
+import { isOffice, isPoliticalParty } from "../../common/typeGuards";
 
 import CandidateSearchInput from "../Subcomponents/CandidateSearchInput";
 import CandidateSearchSelections from "../Subcomponents/CandidateSearchSelections";
 import CandidateSearchStatus from "../Subcomponents/CandidateSearchStatus";
 import CandidateTable from "./CandidateTable";
 
-interface StateProps {
+interface SearchQueryParameters {
+  query: string | null;
+  party: PoliticalParty | null;
+  office: Office | null;
+}
+
+interface StateProps extends SearchQueryParameters {
   processing: boolean;
 }
 
@@ -30,12 +45,6 @@ interface DispatchProps {
   setCandidateQuery: (query: string | null) => void;
   setCandidateOffice: (office: Office | null) => void;
   setCandidateParty: (party: PoliticalParty | null) => void;
-}
-
-interface SearchQueryParameters {
-  query: string | null;
-  party: PoliticalParty | null;
-  office: Office | null;
 }
 
 const CandidateSearch = (
@@ -48,11 +57,23 @@ const CandidateSearch = (
     const { query, party, office } = params;
 
     setCandidateQuery(query);
-    setCandidateParty(party);
-    setCandidateOffice(office);
+
+    if (isPoliticalParty(party)) {
+      setCandidateParty(party);
+    }
+
+    if (isOffice(office)) {
+      setCandidateOffice(office);
+    }
 
     searchCandidates();
   });
+
+  const onSearchCandidatesClick = (): void => {
+    const { query, office, party } = props;
+
+    history.replace(objectToQueryString({ query, office, party }));
+  };
 
   const { processing } = props;
 
@@ -64,7 +85,7 @@ const CandidateSearch = (
       <Button
         className="candidate_search-submit-btn"
         title="Search Candidates"
-        onClick={searchCandidates}
+        onClick={onSearchCandidatesClick}
         inverting
       />
       <CandidateSearchStatus />
@@ -79,6 +100,9 @@ const CandidateSearch = (
 
 const mapStateToProps = (state: RootState): StateProps => ({
   processing: getSearchProcessing(state),
+  query: getQuery(state),
+  office: getOffice(state),
+  party: getPartyAffiliation(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
