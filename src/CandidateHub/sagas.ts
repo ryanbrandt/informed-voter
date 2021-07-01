@@ -19,11 +19,9 @@ import { fecCandidateInfoResultsParser } from "./parsers";
 import { electioneeringTotalsRequest } from "../Electioneering/actions";
 import { independentExpendituresTotalsRequest } from "../IndepdentExpenditures/actions";
 import { communicationCostsRequest } from "../CommunicationCosts/actions";
-import { fecNonOkResponse } from "../common/actions";
 import { ELECTIONEERING_TOTALS_SUCCESS } from "../Electioneering/actionTypes";
 import { INDEPENDENT_EXPENDITURES_TOTALS_SUCCESS } from "../IndepdentExpenditures/actionTypes";
 import { COMMUNICATION_COSTS_SUCCESS } from "../CommunicationCosts/actionTypes";
-import { FEC_NON_OK_RESPONSE } from "../common/actionTypes";
 
 import { history } from "../routes";
 
@@ -35,19 +33,18 @@ export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   yield put(independentExpendituresTotalsRequest(id));
   yield put(communicationCostsRequest(id));
 
-  const { success, failure, timeout } = yield race({
-    success: take([
-      t.ACTIVE_CANDIDATE_INFO_SUCCESS,
-      ELECTIONEERING_TOTALS_SUCCESS,
-      INDEPENDENT_EXPENDITURES_TOTALS_SUCCESS,
-      COMMUNICATION_COSTS_SUCCESS,
+  const { timeout } = yield race({
+    success: all([
+      take(t.ACTIVE_CANDIDATE_INFO_SUCCESS),
+      take(ELECTIONEERING_TOTALS_SUCCESS),
+      take(INDEPENDENT_EXPENDITURES_TOTALS_SUCCESS),
+      take(COMMUNICATION_COSTS_SUCCESS),
     ]),
-    failure: take(FEC_NON_OK_RESPONSE),
-    timeout: delay(ONE_SECOND_MS * 10),
+    timeout: delay(ONE_SECOND_MS * 5),
   });
 
   yield put(a.setCandidateHubProcessing(false));
-  if (failure || timeout) {
+  if (timeout) {
     history.push("/error");
   }
 }
@@ -70,7 +67,6 @@ export function* handleActiveCandidateInfoRequest(
 
     yield put(a.activeCandidateInfoSuccess(results));
   } catch (e) {
-    yield put(fecNonOkResponse());
     console.log(`Failed to retrieve candidate info ${e}`);
   }
 }

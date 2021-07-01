@@ -56,3 +56,25 @@ export const findUnmergedCycleData = (
 
     return result;
   }, -1);
+
+export const queryStringToObject = <T>(queryString: string): T => {
+  if (queryString.length < 1) {
+    return {} as T;
+  }
+
+  return decodeURIComponent(queryString)
+    .replace("?", "")
+    .split("&")
+    .reduce((parsedParams, param) => {
+      const [key, value] = param.split("=");
+
+      return { ...parsedParams, [key]: value };
+    }, {}) as T;
+};
+
+export const objectToQueryString = (o: { [key: string]: any }): string => {
+  return `?${Object.keys(o)
+    .filter((key) => o[key] !== null && o[key] !== undefined && o[key] !== "")
+    .map((key) => `${key}=${o[key]}`)
+    .join("&")}`;
+};
