@@ -7,6 +7,8 @@ import electioneeringSaga from "../Electioneering/sagas";
 import independentExpendituresSaga from "../IndepdentExpenditures/sagas";
 import communicationCostsSaga from "../CommunicationCosts/sagas";
 
+import apiSaga from "../common/sagas";
+
 export default function* () {
   yield all([
     searchSaga(),
@@ -14,5 +16,6 @@ export default function* () {
     electioneeringSaga(),
     independentExpendituresSaga(),
     communicationCostsSaga(),
+    apiSaga(),
   ]);
 }

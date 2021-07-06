@@ -24,6 +24,8 @@ import { INDEPENDENT_EXPENDITURES_TOTALS_SUCCESS } from "../IndepdentExpenditure
 import { COMMUNICATION_COSTS_SUCCESS } from "../CommunicationCosts/actionTypes";
 
 import { history } from "../routes";
+import { fecApiRequest } from "../common/actions";
+import { FEC_NON_OK_RESPONSE } from "../common/actionTypes";
 
 export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   const { id } = action;
@@ -33,7 +35,7 @@ export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   yield put(independentExpendituresTotalsRequest(id));
   yield put(communicationCostsRequest(id));
 
-  const { timeout } = yield race({
+  const { timeout, success, error } = yield race({
     success: all([
       take(t.ACTIVE_CANDIDATE_INFO_SUCCESS),
       take(ELECTIONEERING_TOTALS_SUCCESS),
@@ -41,6 +43,7 @@ export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
       take(COMMUNICATION_COSTS_SUCCESS),
     ]),
     timeout: delay(ONE_SECOND_MS * 5),
+    error: take(FEC_NON_OK_RESPONSE),
   });
 
   yield put(a.setCandidateHubProcessing(false));
@@ -60,15 +63,14 @@ export function* handleActiveCandidateInfoRequest(
 
   const { candidateId } = action;
 
-  try {
-    const results: CandidateInfo = yield call(() =>
-      getAndParse(`/candidate/${candidateId}`, fecCandidateInfoResultsParser)
-    );
-
-    yield put(a.activeCandidateInfoSuccess(results));
-  } catch (e) {
-    console.log(`Failed to retrieve candidate info ${e}`);
-  }
+  yield put(
+    fecApiRequest(
+      `/candidate/${candidateId}`,
+      a.activeCandidateInfoSuccess,
+      fecCandidateInfoResultsParser,
+      true
+    )
+  );
 }
 
 export function* watchActiveCandidateInfoRequest() {
