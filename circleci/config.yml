@@ -1,0 +1,50 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: cypress/base:10
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v2-dependencies-{{ checksum "yarn.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v2-dependencies-{{ .Branch }}-
+            - v2-dependencies-
+
+      - run: yarn add install
+
+      # Start server, run tests
+      - run:
+          name: Start Server
+          command: yarn start
+          background: true
+
+      - run:
+          name: Check Server Started
+          shell: /bin/sh
+          command: |
+            wget --retry-connrefused --waitretry=2 --read-timeout=40 --timeout=35 -t 10 http://localhost:3000/
+            :
+      - run:
+          name: Integration Test
+          command: yarn cypress run
+
+      - save_cache:
+          key: v2-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache
