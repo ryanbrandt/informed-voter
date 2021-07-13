@@ -4,7 +4,6 @@ import {
   all,
   call,
   cancel,
-  fork,
   put,
   takeEvery,
   takeLatest,
@@ -13,22 +12,23 @@ import {
 import api from "../utils/api";
 
 import * as t from "./actionTypes";
-import {
-  fecApiRequest,
-  fecNonOkResponse,
-  IFecApiRequest,
-  IFecNonOkResponse,
-} from "./actions";
+import { fecApiError, IFecApiError, IFecApiRequest } from "./actions";
 import { DEFAULT_FEC_API_RESPONSE } from "./constants";
 import { BaseFecResponse } from "./types";
+import { history } from "../routes";
 
-export function* handleFecNonOkResponse(apiTask: any, action: any) {
+export function* handleFecNonOkResponse(apiTask: any, action: IFecApiError) {
   yield cancel(apiTask);
-  console.log(action);
+
+  const { status } = action;
+  history.push("/error", { variant: status });
 }
 
-export function* handleFecApiRequest(action: IFecApiRequest) {
+export function* handleFecApiRequest(action: IFecApiRequest<unknown, unknown>) {
   const { path, onSuccess, requireResults, emitError } = action;
+
+  let problemError: PROBLEM_CODE | undefined;
+  let problemStatus: number | undefined;
 
   try {
     const {
@@ -40,24 +40,27 @@ export function* handleFecApiRequest(action: IFecApiRequest) {
 
     const { results } = data;
 
-    if (!ok || (requireResults && results?.length < 1)) {
-      if (emitError) {
-        yield put(fecNonOkResponse(status as number, problem as PROBLEM_CODE));
-      }
+    if (!ok) {
+      problemError = problem as PROBLEM_CODE;
+      problemStatus = status as number;
+    } else if (requireResults && results.length < 1) {
+      problemError = "CLIENT_ERROR";
+      problemStatus = 404;
+    } else {
+      const { parser } = action;
+      const parsedData = parser(results);
 
-      return;
+      yield put(onSuccess(parsedData));
     }
-
-    const { parser } = action;
-    let parsedData = data;
-
-    if (parser) {
-      parsedData = parser(results);
-    }
-
-    yield put(onSuccess(parsedData));
   } catch (e) {
     console.log(`Failed to complete FEC API call ${e}`);
+
+    problemError = "UNKNOWN_ERROR";
+    problemStatus = -1;
+  }
+
+  if (emitError && problemError !== undefined && problemStatus !== undefined) {
+    yield put(fecApiError(problemStatus, problemError));
   }
 }
 
@@ -67,7 +70,7 @@ export function* watchFecApiRequest() {
   const fecApiTask = yield takeEvery(t.FEC_API_REQUEST, handleFecApiRequest);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  yield takeLatest(t.FEC_NON_OK_RESPONSE, handleFecNonOkResponse, fecApiTask);
+  yield takeLatest(t.FEC_API_ERROR, handleFecNonOkResponse, fecApiTask);
 }
 
 export default function* rootSaga() {

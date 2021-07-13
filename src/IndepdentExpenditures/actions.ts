@@ -21,7 +21,7 @@ export interface IIndependentExpendituresTotalsSuccess {
 }
 
 export function independentExpendituresTotalsSuccess(
-  totals: any
+  totals: Array<IndependentExpendituresTotals>
 ): IIndependentExpendituresTotalsSuccess {
   return {
     type: t.INDEPENDENT_EXPENDITURES_TOTALS_SUCCESS,

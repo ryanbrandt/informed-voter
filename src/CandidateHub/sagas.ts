@@ -1,19 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import {
-  all,
-  takeLatest,
-  take,
-  put,
-  call,
-  delay,
-  race,
-} from "redux-saga/effects";
+import { all, takeLatest, take, put, delay, race } from "redux-saga/effects";
 
 import * as t from "./actionTypes";
 import * as a from "./actions";
 
-import { getAndParse } from "../utils/helpers";
-import { CandidateInfo } from "./types";
 import { ONE_SECOND_MS } from "../common/constants";
 import { fecCandidateInfoResultsParser } from "./parsers";
 import { electioneeringTotalsRequest } from "../Electioneering/actions";
@@ -23,9 +13,8 @@ import { ELECTIONEERING_TOTALS_SUCCESS } from "../Electioneering/actionTypes";
 import { INDEPENDENT_EXPENDITURES_TOTALS_SUCCESS } from "../IndepdentExpenditures/actionTypes";
 import { COMMUNICATION_COSTS_SUCCESS } from "../CommunicationCosts/actionTypes";
 
-import { history } from "../routes";
 import { fecApiRequest } from "../common/actions";
-import { FEC_NON_OK_RESPONSE } from "../common/actionTypes";
+import { FEC_API_ERROR } from "../common/actionTypes";
 
 export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   const { id } = action;
@@ -35,7 +24,7 @@ export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
   yield put(independentExpendituresTotalsRequest(id));
   yield put(communicationCostsRequest(id));
 
-  const { timeout, success, error } = yield race({
+  const { timeout, error, success } = yield race({
     success: all([
       take(t.ACTIVE_CANDIDATE_INFO_SUCCESS),
       take(ELECTIONEERING_TOTALS_SUCCESS),
@@ -43,13 +32,10 @@ export function* handleSetActiveCandidate(action: a.ISetActiveCandidate) {
       take(COMMUNICATION_COSTS_SUCCESS),
     ]),
     timeout: delay(ONE_SECOND_MS * 5),
-    error: take(FEC_NON_OK_RESPONSE),
+    error: take(FEC_API_ERROR),
   });
 
   yield put(a.setCandidateHubProcessing(false));
-  if (timeout) {
-    history.push("/error");
-  }
 }
 
 export function* watchSetActiveCandidate() {

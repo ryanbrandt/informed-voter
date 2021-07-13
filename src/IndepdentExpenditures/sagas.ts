@@ -1,36 +1,24 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { all, takeLatest, call, put } from "redux-saga/effects";
+import { all, takeLatest, put } from "redux-saga/effects";
 
 import * as t from "./actionTypes";
 import * as a from "./actions";
 
-import { getAndParse } from "../utils/helpers";
 import { fecIndependetExpendituresTotalsResultsParser } from "./parsers";
-import { IndependentExpendituresTotals } from "./types";
+import { fecApiRequest } from "../common/actions";
 
 export function* handleIndependentExpendituresTotalsRequest(
   action: a.IIndependentExpendituresTotalsRequest
 ) {
   const { candidateId } = action;
 
-  try {
-    const results: Array<IndependentExpendituresTotals> = yield call(() =>
-      getAndParse(
-        `/schedules/schedule_e/totals/by_candidate/?candidate_id=${candidateId}`,
-        fecIndependetExpendituresTotalsResultsParser
-      )
-    );
-
-    let latestCycle = -1;
-    if (results.length > 0) {
-      latestCycle = Math.max(...results.map((result) => result.cycle));
-    }
-
-    yield put(a.independetExpendituresTotalsSetActiveCycle(latestCycle));
-    yield put(a.independentExpendituresTotalsSuccess(results));
-  } catch (e) {
-    console.log(`Failed to retrieve independent expenditures totals data ${e}`);
-  }
+  yield put(
+    fecApiRequest(
+      `/schedules/schedule_e/totals/by_candidate/?candidate_id=${candidateId}`,
+      a.independentExpendituresTotalsSuccess,
+      fecIndependetExpendituresTotalsResultsParser
+    )
+  );
 }
 
 export function* watchIndependentExpendituresTotalsRequest() {
@@ -40,6 +28,29 @@ export function* watchIndependentExpendituresTotalsRequest() {
   );
 }
 
+export function* handleIndependentExpendituresTotalsSuccess(
+  action: a.IIndependentExpendituresTotalsSuccess
+) {
+  const { totals } = action;
+
+  let latestCycle = -1;
+  if (totals.length > 0) {
+    latestCycle = Math.max(...totals.map((result) => result.cycle));
+  }
+
+  yield put(a.independetExpendituresTotalsSetActiveCycle(latestCycle));
+}
+
+export function* watchIndependentExpendituresTotalsSuccess() {
+  yield takeLatest(
+    t.INDEPENDENT_EXPENDITURES_TOTALS_SUCCESS,
+    handleIndependentExpendituresTotalsSuccess
+  );
+}
+
 export default function* rootSaga() {
-  yield all([watchIndependentExpendituresTotalsRequest()]);
+  yield all([
+    watchIndependentExpendituresTotalsRequest(),
+    watchIndependentExpendituresTotalsSuccess(),
+  ]);
 }

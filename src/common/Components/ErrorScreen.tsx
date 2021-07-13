@@ -5,15 +5,36 @@ import { Button, Countdown } from "handsome-ui";
 
 import { history } from "../../routes/index";
 
+type ErrorVariant = 401 | 404 | 500 | 503;
+
 interface Props {
   onResolve?: Function;
-  variant?: 401 | 404;
+  variant?: ErrorVariant;
   message?: string;
 }
 
 const ErrorScreen: React.FunctionComponent<Props> = (
   props: Props
 ): JSX.Element => {
+  const ERROR_TEXT_MAP = {
+    401: {
+      header: "Unauthorized",
+      text: "You are not authorized to access this resource",
+    },
+    404: {
+      header: "Not Found",
+      text: "The requested resource was not found",
+    },
+    500: {
+      header: "Unkown Server Error",
+      text: "An unexpected server error occurred",
+    },
+    503: {
+      header: "FEC API Service Unavailable",
+      text: "The FEC API is currently not available-- try again later",
+    },
+  };
+
   const { state = {} } = useLocation<Props>();
 
   const mergedProps: Props = { ...props, ...state };
@@ -31,22 +52,22 @@ const ErrorScreen: React.FunctionComponent<Props> = (
   const _computeErrorHeader = (): string => {
     const { variant } = state;
 
-    let header = "We're having a moment";
-    if (variant === 404) {
-      header = "Not Found";
-    } else if (variant === 401) {
-      header = "Unauthorized";
+    let header = "We're Having a Moment";
+    if (variant && ERROR_TEXT_MAP[variant]) {
+      header = ERROR_TEXT_MAP[variant].header;
     }
 
     return header;
   };
 
   const _computeErrorMessage = (): string => {
-    const { message } = mergedProps;
+    const { message, variant } = mergedProps;
 
-    let errorMessage = "An Unexpected Error has Occured";
+    let errorMessage = "An unkown error has occurred";
     if (message) {
       errorMessage = message;
+    } else if (variant && ERROR_TEXT_MAP[variant]) {
+      errorMessage = ERROR_TEXT_MAP[variant].text;
     }
 
     return errorMessage;

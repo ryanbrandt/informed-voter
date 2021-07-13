@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { all, takeLatest, call, put } from "redux-saga/effects";
+import { all, takeLatest, put } from "redux-saga/effects";
 
 import * as t from "./actionTypes";
 import * as a from "./actions";
+import { fecApiRequest } from "../common/actions";
 
-import { getAndParse } from "../utils/helpers";
-import { ElectioneeringTotals } from "./types";
 import { fecElectioneeringTotalsResultsParser } from "./parsers";
 
 export function* handleElectioneeringTotalsRequest(
@@ -13,18 +12,13 @@ export function* handleElectioneeringTotalsRequest(
 ) {
   const { candidateId } = action;
 
-  try {
-    const results: Array<ElectioneeringTotals> = yield call(() =>
-      getAndParse(
-        `/electioneering/totals/by_candidate/?candidate_id=${candidateId}`,
-        fecElectioneeringTotalsResultsParser
-      )
-    );
-
-    yield put(a.electioneeringTotalsSuccess(results));
-  } catch (e) {
-    console.log(`Failed to retrieve electioneering totals data ${e}`);
-  }
+  yield put(
+    fecApiRequest(
+      `/electioneering/totals/by_candidate/?candidate_id=${candidateId}`,
+      a.electioneeringTotalsSuccess,
+      fecElectioneeringTotalsResultsParser
+    )
+  );
 }
 
 export function* watchElectioneeringTotalsRequest() {

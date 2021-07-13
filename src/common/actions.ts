@@ -2,18 +2,18 @@ import { PROBLEM_CODE } from "apisauce";
 import { IFecParser } from "../utils/types";
 import * as t from "./actionTypes";
 
-export interface IFecNonOkResponse {
-  type: t.T_FEC_NON_OK_RESPONSE;
+export interface IFecApiError {
+  type: t.T_FEC_API_ERROR;
   status: number;
   problem: PROBLEM_CODE;
 }
 
-export function fecNonOkResponse(
+export function fecApiError(
   status: number,
   problem: PROBLEM_CODE
-): IFecNonOkResponse {
+): IFecApiError {
   return {
-    type: t.FEC_NON_OK_RESPONSE,
+    type: t.FEC_API_ERROR,
     status,
     problem,
   };
@@ -28,23 +28,24 @@ interface PutEffectFn<T> {
   (payload: T): IBaseAction<T>;
 }
 
-export interface IFecApiRequest {
+export interface IFecApiRequest<T, U> {
   type: t.T_FEC_API_REQUEST;
   path: string;
-  onSuccess: PutEffectFn<any>;
+  onSuccess: PutEffectFn<U>;
+  parser: IFecParser<T, U>;
 
-  parser?: IFecParser<any, any>;
   requireResults?: boolean;
   emitError?: boolean;
 }
 
-export function fecApiRequest(
+export function fecApiRequest<T, U>(
   path: string,
-  onSuccess: PutEffectFn<any>,
-  parser?: IFecParser<any, any>,
+  onSuccess: PutEffectFn<U>,
+  parser: IFecParser<T, U>,
+
   requireResults = false,
   emitError = true
-): IFecApiRequest {
+): IFecApiRequest<T, U> {
   return {
     type: t.FEC_API_REQUEST,
     path,
