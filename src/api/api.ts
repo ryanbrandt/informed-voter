@@ -1,6 +1,6 @@
 import { create } from "apisauce";
 
-import { FEC_API_KEY, FEC_BASE_URL } from "./secrets";
+import { FEC_API_KEY, FEC_BASE_URL } from "../utils/secrets";
 
 const api = create({
   baseURL: FEC_BASE_URL,

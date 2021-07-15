@@ -1,7 +1,7 @@
-import { IFecParser } from "../utils/types";
+import { IFecApiResultsParser } from "../api/types";
 import { FecElectioneeringTotalsResults, ElectioneeringTotals } from "./types";
 
-export const fecElectioneeringTotalsResultsParser: IFecParser<
+export const fecElectioneeringTotalsResultsParser: IFecApiResultsParser<
   FecElectioneeringTotalsResults,
   Array<ElectioneeringTotals>
 > = (

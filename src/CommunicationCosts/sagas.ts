@@ -4,7 +4,7 @@ import { all, takeLatest, call, put } from "redux-saga/effects";
 import * as t from "./actionTypes";
 import * as a from "./actions";
 
-import { getAndParse } from "../utils/helpers";
+import { getAndParse } from "../api/utils";
 import { fecCommunicationCostsResultsParser } from "./parsers";
 import { CommunicationCosts } from "./types";
 

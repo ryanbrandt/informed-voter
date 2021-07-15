@@ -12,7 +12,7 @@ import {
 import * as t from "./actionTypes";
 import * as a from "./actions";
 
-import { getAndParse } from "../utils/helpers";
+import { getAndParse } from "../api/utils";
 import { CandidateInfo } from "./types";
 import { ONE_SECOND_MS } from "../common/constants";
 import { fecCandidateInfoResultsParser } from "./parsers";
