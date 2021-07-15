@@ -1,11 +1,11 @@
-import { IFecParser } from "../utils/types";
+import { IFecApiResultsParser } from "../api/types";
 import { findUnmergedCycleData } from "../utils/helpers";
 import {
   FecIndependentExpendituresTotalsResults,
   IndependentExpendituresTotals,
 } from "./types";
 
-export const fecIndependetExpendituresTotalsResultsParser: IFecParser<
+export const fecIndependetExpendituresTotalsResultsParser: IFecApiResultsParser<
   FecIndependentExpendituresTotalsResults,
   Array<IndependentExpendituresTotals>
 > = (

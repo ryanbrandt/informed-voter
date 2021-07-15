@@ -10,7 +10,7 @@ import {
   getQuery,
 } from "./selectors";
 
-import api from "../utils/api";
+import api from "../api/api";
 import { BaseFecResponse, Office, PoliticalParty } from "../common/types";
 import {
   API_RESPONSE_DELAY,

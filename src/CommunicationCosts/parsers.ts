@@ -1,8 +1,8 @@
-import { IFecParser } from "../utils/types";
+import { IFecApiResultsParser } from "../api/types";
 import { findUnmergedCycleData } from "../utils/helpers";
 import { CommunicationCosts, FecCommunicationCostsResults } from "./types";
 
-export const fecCommunicationCostsResultsParser: IFecParser<
+export const fecCommunicationCostsResultsParser: IFecApiResultsParser<
   FecCommunicationCostsResults,
   Array<CommunicationCosts>
 > = (costs: Array<FecCommunicationCostsResults>): Array<CommunicationCosts> => {
