@@ -2,7 +2,7 @@ import React from "react";
 
 import { Dropdown } from "handsome-ui";
 
-interface Props {
+export interface Props {
   children: React.ReactChildren | React.ReactChild;
   header: string;
   defaultOpen?: boolean;

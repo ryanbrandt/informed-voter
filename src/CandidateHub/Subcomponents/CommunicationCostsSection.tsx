@@ -1,13 +1,13 @@
 import React from "react";
 
 import CommunicationCosts from "../../CommunicationCosts/Components/CommunicationCosts";
-import DropdownSection from "../../common/Components/DropdownSection";
+import CandidateHubDropdownSection from "../Components/CandidateHubDropdownSection";
 
 const ElectioneeringSection = (): React.ReactElement => {
   return (
-    <DropdownSection header="Communication Costs" defaultOpen>
+    <CandidateHubDropdownSection header="Communication Costs">
       <CommunicationCosts />
-    </DropdownSection>
+    </CandidateHubDropdownSection>
   );
 };
 

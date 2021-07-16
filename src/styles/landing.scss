@@ -39,4 +39,9 @@
   &_search-container {
     padding: 30px;
   }
+
+  &_version {
+    color: $informed-gray;
+    font-style: italic;
+  }
 }

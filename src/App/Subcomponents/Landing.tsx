@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Chevron, Row, Github, WorldWideWeb, Button } from "handsome-ui";
+import { Row, Github, WorldWideWeb, Button } from "handsome-ui";
 
 import { history } from "../../routes";
-
+import { version } from "../../utils/gitVersion";
 import VotingBoxSvg from "../../assets/Svg/VotingBoxSvg";
 
 const Landing = (): React.ReactElement => {
@@ -38,7 +38,7 @@ const Landing = (): React.ReactElement => {
     );
   };
 
-  const _renderSearchSection = (): React.ReactNode => {
+  const _renderGetStartedSection = (): React.ReactNode => {
     return (
       <div className="landing_search-container">
         <Button
@@ -61,7 +61,8 @@ const Landing = (): React.ReactElement => {
       </div>
       <VotingBoxSvg className="landing_svg" />
       {_renderLinkSection()}
-      {_renderSearchSection()}
+      {_renderGetStartedSection()}
+      <small className="landing_version">{version}</small>
     </div>
   );
 };

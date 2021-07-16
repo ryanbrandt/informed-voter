@@ -26,7 +26,13 @@ jobs:
             - v2-dependencies-{{ .Branch }}-
             - v2-dependencies-
 
-      - run: yarn add install
+      - run:
+        name: Generate secrets file
+        shell: /bin/sh
+        command: |
+          config/generate-secrets.sh
+
+      - run: yarn install
 
       # Start server, run tests
       - run:

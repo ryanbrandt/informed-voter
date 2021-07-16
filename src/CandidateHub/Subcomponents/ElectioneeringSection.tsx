@@ -1,13 +1,13 @@
 import React from "react";
 
 import ElectioneeringTotals from "../../Electioneering/Components/ElectioneeringTotals";
-import DropdownSection from "../../common/Components/DropdownSection";
+import CandidateHubDropdownSection from "../Components/CandidateHubDropdownSection";
 
 const ElectioneeringSection = (): React.ReactElement => {
   return (
-    <DropdownSection header="Electioneering Totals" defaultOpen>
+    <CandidateHubDropdownSection header="Electioneering Totals">
       <ElectioneeringTotals />
-    </DropdownSection>
+    </CandidateHubDropdownSection>
   );
 };
 

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 
-import { Column, Divider, Row, Breadcrumbs } from "handsome-ui";
+import { Column, Divider, Row, Breadcrumbs, AppContext } from "handsome-ui";
 
 import { RootState } from "../../store/rootReducer";
 import { DEFAULT_CANDIDATE_INFO } from "../constants";
@@ -79,11 +79,13 @@ const CandidateHubHeader = (props: StateProps): React.ReactElement => {
     );
   };
 
+  const isMobile = useContext(AppContext);
+
   return (
     <div>
       <Row version="space-between">
         {_renderBreadCrumbs()}
-        <CitationButton />
+        {!isMobile && <CitationButton />}
       </Row>
       <div className="candidate_hub-header">
         {name} for {office}
