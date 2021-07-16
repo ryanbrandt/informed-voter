@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef } from "react";
 
-import { WindowSizeContext } from "../../App/context";
+import { useWindowSize } from "../../App/hooks";
 
 import {
   TwoDimensionalChartOption,
@@ -18,7 +18,7 @@ export interface Props extends ChartProps<TwoDimensionalPoint> {
 }
 
 const TwoDimensionalChart = (props: Props): React.ReactElement => {
-  const windowSize = useContext(WindowSizeContext);
+  const windowSize = useWindowSize();
 
   const node = useRef<SVGSVGElement | null>(null);
 
