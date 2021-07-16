@@ -1,24 +1,14 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: cypress/base:10
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
     steps:
       - checkout
 
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "yarn.lock" }}
@@ -30,11 +20,10 @@ jobs:
           name: Generate secrets file
           shell: /bin/sh
           command: |
-            config/generate-secrets.sh
+            sh ./config/generate-secrets.sh
 
       - run: yarn install
 
-      # Start server, run tests
       - run:
           name: Start Server
           command: yarn start
